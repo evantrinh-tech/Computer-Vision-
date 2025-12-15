@@ -9,6 +9,14 @@ from src.models.base_model import BaseModel
 from src.utils.logger import logger
 
 class ANNModel(BaseModel):
+    """
+    ANNModel: Mạng Nơ-ron Nhân tạo (Artificial Neural Network - Feed Forward).
+    
+    Đặc điểm:
+    - Là mô hình cơ bản nhất (Multilayer Perceptron).
+    - Dùng cho dữ liệu dạng bảng (tabular data) hoặc feature vectors đã được trích xuất.
+    - Cấu trúc gồm Input Layer -> Hidden Layers (Dense) -> Output Layer.
+    """
 
     def __init__(
         self,
@@ -18,6 +26,13 @@ class ANNModel(BaseModel):
         learning_rate: float = 0.001,
         config: Optional[Dict[str, Any]] = None
     ):
+        """
+        Khởi tạo ANN Model.
+        Args:
+            hidden_layers: List số lượng nơ-ron cho từng lớp ẩn (VD: [64, 32]).
+            activation: Hàm kích hoạt (relu, tanh, sigmoid...).
+            dropout_rate: Tỷ lệ Dropout để chống overfitting.
+        """
 
         super().__init__("ANN", config)
         self.hidden_layers = hidden_layers
@@ -28,7 +43,9 @@ class ANNModel(BaseModel):
         self.is_trained = False
 
     def build(self, input_shape: Tuple[int, ...], **kwargs) -> None:
-
+        """
+        Xây dựng kiến trúc mạng MLP (Multi-layer Perceptron).
+        """
         input_dim = input_shape[0] if len(input_shape) > 0 else input_shape
 
         inputs = keras.Input(shape=(input_dim,))
@@ -64,6 +81,9 @@ class ANNModel(BaseModel):
         verbose: int = 1,
         **kwargs
     ) -> Dict[str, Any]:
+        """
+        Huấn luyện mô hình ANN với dữ liệu dạng vectors.
+        """
 
         if self.model is None:
             self.build(X_train.shape[1:])

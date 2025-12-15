@@ -13,18 +13,21 @@ echo ========================================
 echo.
 echo Chọn chức năng:
 echo.
-echo [1] 🖥️  Giao diện Web (Streamlit) - KHUYẾN NGHỊ
-echo [2] 🚀 Chạy API Server
-echo [3] 🎓 Huấn luyện mô hình
-echo [4] 🔍 Test mô hình
-echo [5] 📊 Kiểm tra trạng thái hệ thống
-echo [6] ⚙️  Tạo Virtual Environment
-echo [7] 🗄️  Setup Database
-echo [8] 🧹 Dọn dẹp hệ thống
-echo [9] ⚡ Quick Start (Tự động setup và chạy)
-echo [0] ❌ Thoát
+echo [1]  Giao diện Web (Streamlit) 
+echo [2]  Chạy API Server
+echo [3]  Huấn luyện mô hình
+echo [4]  Test mô hình
+echo [5]  Kiểm tra trạng thái hệ thống
+echo [6]   Tạo Virtual Environment
+echo [7]   Setup Database
+echo [8]  Dọn dẹp hệ thống
+echo [9]  Quick Start (Tự động setup và chạy)
+echo [V]   Verify hệ thống (check imports)
+echo [0]  Thoát
 echo.
-set /p choice="Nhập lựa chọn (0-9): "
+set /p choice="Nhập lựa chọn (0-9 hoặc V): "
+
+if /i "%choice%"=="V" goto VERIFY_SYSTEM
 
 if "%choice%"=="1" goto GUI
 if "%choice%"=="2" goto API_SERVER
@@ -48,36 +51,36 @@ echo   GIAO DIỆN WEB (STREAMLIT)
 echo ========================================
 echo.
 if not exist "venv311\Scripts\activate.bat" (
-    echo ❌ Lỗi: Không tìm thấy venv311
+    echo  Lỗi: Không tìm thấy venv311
     echo Vui lòng chọn [6] để tạo virtual environment
     pause
     goto MENU
 )
 call venv311\Scripts\activate.bat
 if errorlevel 1 (
-    echo ❌ Lỗi: Không thể kích hoạt venv311
+    echo  Lỗi: Không thể kích hoạt venv311
     pause
     goto MENU
 )
-echo ✅ Đã kích hoạt virtual environment
+echo  Đã kích hoạt virtual environment
 echo.
 python -c "import streamlit" 2>nul
 if errorlevel 1 (
-    echo ⚠️  Streamlit chưa được cài đặt
+    echo   Streamlit chưa được cài đặt
     echo Đang cài đặt Streamlit...
     pip install streamlit>=1.28.0
     if errorlevel 1 (
-        echo ❌ Lỗi: Không thể cài đặt Streamlit
+        echo  Lỗi: Không thể cài đặt Streamlit
         pause
         goto MENU
     )
-    echo ✅ Đã cài đặt Streamlit
+    echo  Đã cài đặt Streamlit
     echo.
 )
-echo 🚀 Đang khởi động giao diện web...
+echo  Đang khởi động giao diện web...
 echo.
-echo 📌 Giao diện sẽ mở tại: http://localhost:8501
-echo 📌 Nhấn Ctrl+C để dừng server
+echo  Giao diện sẽ mở tại: http://localhost:8501
+echo  Nhấn Ctrl+C để dừng server
 echo.
 if not exist ".streamlit" mkdir .streamlit
 set STREAMLIT_BROWSER_GATHER_USAGE_STATS=false
@@ -95,18 +98,18 @@ echo   CHẠY API SERVER
 echo ========================================
 echo.
 if not exist "venv311\Scripts\activate.bat" (
-    echo ❌ Lỗi: Không tìm thấy venv311
+    echo  Lỗi: Không tìm thấy venv311
     echo Vui lòng chọn [6] để tạo virtual environment
     pause
     goto MENU
 )
 call venv311\Scripts\activate.bat
 if errorlevel 1 (
-    echo ❌ Lỗi: Không thể kích hoạt venv311
+    echo  Lỗi: Không thể kích hoạt venv311
     pause
     goto MENU
 )
-echo ✅ Đã kích hoạt virtual environment
+echo  Đã kích hoạt virtual environment
 echo.
 echo API Server sẽ chạy tại: http://localhost:8000
 echo Documentation: http://localhost:8000/docs
@@ -151,33 +154,33 @@ echo   TRAIN CNN MODEL (VỚI ẢNH)
 echo ========================================
 echo.
 if not exist "venv311\Scripts\activate.bat" (
-    echo ❌ Lỗi: Không tìm thấy venv311
+    echo  Lỗi: Không tìm thấy venv311
     pause
     goto TRAIN_MENU
 )
 call venv311\Scripts\activate.bat
 if errorlevel 1 (
-    echo ❌ Lỗi: Không thể kích hoạt venv311
+    echo  Lỗi: Không thể kích hoạt venv311
     pause
     goto TRAIN_MENU
 )
-echo ✅ Đã kích hoạt virtual environment
+echo  Đã kích hoạt virtual environment
 echo.
 if not exist "data\images\normal" (
-    echo ❌ Lỗi: Không tìm thấy folder data\images\normal
+    echo  Lỗi: Không tìm thấy folder data\images\normal
     echo Vui lòng đảm bảo có folder data\images\normal chứa ảnh bình thường
     pause
     goto TRAIN_MENU
 )
 if not exist "data\images\incident" (
-    echo ❌ Lỗi: Không tìm thấy folder data\images\incident
+    echo  Lỗi: Không tìm thấy folder data\images\incident
     echo Vui lòng đảm bảo có folder data\images\incident chứa ảnh có sự cố
     pause
     goto TRAIN_MENU
 )
 echo 📁 Đã tìm thấy folder ảnh
 echo.
-echo 🚀 Bắt đầu huấn luyện mô hình CNN...
+echo  Bắt đầu huấn luyện mô hình CNN...
 echo    (Quá trình này có thể mất nhiều thời gian)
 echo.
 python train_cnn.py
@@ -192,17 +195,17 @@ echo   TRAIN ANN MODEL
 echo ========================================
 echo.
 if not exist "venv311\Scripts\activate.bat" (
-    echo ❌ Lỗi: Không tìm thấy venv311
+    echo  Lỗi: Không tìm thấy venv311
     pause
     goto TRAIN_MENU
 )
 call venv311\Scripts\activate.bat
 if errorlevel 1 (
-    echo ❌ Lỗi: Không thể kích hoạt venv311
+    echo  Lỗi: Không thể kích hoạt venv311
     pause
     goto TRAIN_MENU
 )
-echo ✅ Đã kích hoạt virtual environment
+echo  Đã kích hoạt virtual environment
 echo.
 echo Đang train ANN model với dữ liệu mô phỏng...
 echo (Có thể mất vài phút)
@@ -230,7 +233,7 @@ if errorlevel 1 (
     pause
     goto TRAIN_MENU
 )
-echo ✅ Đã kích hoạt virtual environment
+echo  Đã kích hoạt virtual environment
 echo.
 echo Đang train RNN model với dữ liệu mô phỏng...
 echo (Có thể mất vài phút)
@@ -258,7 +261,7 @@ if errorlevel 1 (
     pause
     goto TRAIN_MENU
 )
-echo ✅ Đã kích hoạt virtual environment
+echo  Đã kích hoạt virtual environment
 echo.
 echo Đang train RBFNN model với dữ liệu mô phỏng...
 echo.
@@ -311,7 +314,7 @@ if errorlevel 1 (
     pause
     goto TEST_MENU
 )
-echo ✅ Đã kích hoạt virtual environment
+echo  Đã kích hoạt virtual environment
 echo.
 set /p image_path="Nhập đường dẫn ảnh hoặc thư mục (Enter để bỏ qua): "
 if "%image_path%"=="" (
@@ -342,7 +345,7 @@ if errorlevel 1 (
     pause
     goto TEST_MENU
 )
-echo ✅ Đã kích hoạt virtual environment
+echo  Đã kích hoạt virtual environment
 echo.
 set /p video_path="Nhập đường dẫn video: "
 if "%video_path%"=="" (
@@ -373,7 +376,7 @@ if errorlevel 1 (
     pause
     goto TEST_MENU
 )
-echo ✅ Đã kích hoạt virtual environment
+echo  Đã kích hoạt virtual environment
 echo.
 echo Đang test API tại http://localhost:8000
 echo.
@@ -403,11 +406,11 @@ if errorlevel 1 (
     pause
     goto TEST_MENU
 )
-echo ✅ Đã kích hoạt virtual environment
+echo  Đã kích hoạt virtual environment
 echo.
 echo Đang test Temporal Confirmation module...
 echo.
-python -c "from src.serving.temporal_confirmation import TemporalConfirmation; print('✅ Temporal Confirmation module OK')"
+python -c "from src.serving.temporal_confirmation import TemporalConfirmation; print(' Temporal Confirmation module OK')"
 echo.
 pause
 goto TEST_MENU
@@ -432,7 +435,7 @@ if errorlevel 1 (
     pause
     goto MENU
 )
-echo ✅ Đã kích hoạt virtual environment
+echo  Đã kích hoạt virtual environment
 echo.
 echo Đang kiểm tra trạng thái hệ thống...
 echo.
@@ -551,7 +554,7 @@ if errorlevel 1 (
     pause
     goto MENU
 )
-echo ✅ Đã kích hoạt virtual environment
+echo  Đã kích hoạt virtual environment
 echo.
 echo 📌 Setup Database (PostgreSQL)
 echo.
@@ -562,14 +565,14 @@ echo 1. Chạy migration script: src\database\migrations\001_initial_schema.sql
 echo 2. Hoặc sử dụng SQLAlchemy để tạo tables tự động
 echo.
 echo Đang kiểm tra SQLAlchemy...
-python -c "from sqlalchemy import create_engine; print('✅ SQLAlchemy OK')" 2>nul
+python -c "from sqlalchemy import create_engine; print(' SQLAlchemy OK')" 2>nul
 if errorlevel 1 (
     echo ⚠️  SQLAlchemy chưa được cài đặt
     echo Đang cài đặt...
     pip install sqlalchemy psycopg2-binary
 )
 echo.
-echo ✅ Database setup script sẵn sàng
+echo  Database setup script sẵn sàng
 echo Xem file: src\database\migrations\001_initial_schema.sql
 echo.
 pause
@@ -646,7 +649,7 @@ if not exist "venv311\Scripts\activate.bat" (
     echo.
     goto CREATE_VENV_FROM_QUICK
 )
-echo ✅ Virtual environment đã sẵn sàng
+echo  Virtual environment đã sẵn sàng
 echo.
 echo Đang khởi động giao diện web...
 echo.
@@ -686,13 +689,57 @@ echo.
 echo Đang cài đặt các dependencies khác...
 pip install mlflow fastapi uvicorn pandas scikit-learn pywavelets kafka-python python-dotenv pyyaml python-json-logger pydantic-settings sqlalchemy psycopg2-binary opencv-python pillow streamlit
 echo.
-echo ✅ Hoàn tất setup!
+echo  Hoàn tất setup!
 echo.
 echo Đang khởi động giao diện web...
 echo.
 set STREAMLIT_BROWSER_GATHER_USAGE_STATS=false
 if not exist ".streamlit" mkdir .streamlit
 python run_streamlit.py
+goto MENU
+
+REM ========================================
+REM VERIFY SYSTEM
+REM ========================================
+:VERIFY_SYSTEM
+cls
+echo ========================================
+echo   VERIFY HỆ THỐNG
+echo ========================================
+echo.
+echo Đang kiểm tra cấu trúc imports và modules...
+echo.
+if not exist "venv311\Scripts\activate.bat" (
+    echo ❌ Lỗi: Không tìm thấy venv311
+    pause
+    goto MENU
+)
+call venv311\Scripts\activate.bat
+if errorlevel 1 (
+    echo ❌ Lỗi: Không thể kích hoạt venv311
+    pause
+    goto MENU
+)
+echo  Đã kích hoạt virtual environment
+echo.
+REM Set PYTHONPATH
+set PYTHONPATH=%CD%;%PYTHONPATH%
+echo  PYTHONPATH: %CD%
+echo.
+echo Đang chạy verification script...
+echo.
+if exist "verify_and_fix_imports.py" (
+    python verify_and_fix_imports.py
+) else (
+    echo ⚠️  Script verify_and_fix_imports.py không tồn tại
+    echo.
+    echo Đang kiểm tra imports cơ bản...
+    python -c "import sys; sys.path.insert(0, '.'); from src.models.cnn import CNNModel; print(' CNN import OK')"
+    python -c "import sys; sys.path.insert(0, '.'); from src.serving.api import app; print(' API import OK')"
+    python -c "import sys; sys.path.insert(0, '.'); from src.data_processing.image_processor import ImageProcessor; print(' ImageProcessor import OK')"
+)
+echo.
+pause
 goto MENU
 
 REM ========================================

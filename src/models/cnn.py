@@ -54,7 +54,12 @@ class CNNModel(BaseModel):
             base.trainable = False
 
             inputs = keras.Input(shape=(*self.image_size, 3))
-            x = base(inputs, training=False)
+            
+            # MobileNetV2 expects input in range [-1, 1], but ImageProcessor returns [0, 1]
+            # Rescaling: scale=2. (0->0, 1->2), offset=-1. (0->-1, 2->1) => [-1, 1]
+            x = layers.Rescaling(scale=2., offset=-1.)(inputs)
+            
+            x = base(x, training=False)
             x = layers.GlobalAveragePooling2D()(x)
             x = layers.Dropout(0.2)(x)
             x = layers.Dense(128, activation='relu')(x)

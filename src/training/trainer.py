@@ -62,6 +62,7 @@ class ModelTrainer:
         elif self.model_type == 'CNN':
             return CNNModel(
                 use_transfer_learning=model_config.get('use_transfer_learning', True),
+                base_model=model_config.get('base_model', 'MobileNetV2'),
                 image_size=tuple(model_config.get('image_size', [224, 224])),
                 learning_rate=model_config.get('learning_rate', 0.001)
             )

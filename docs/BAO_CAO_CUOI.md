@@ -93,11 +93,11 @@ Hệ thống có **3 task riêng biệt**:
 
 ### 4.2. Vision Baseline: CNN với Transfer Learning
 
-#### 4.2.1. Lý do chọn CNN
-- Phù hợp với dữ liệu ảnh
-- Transfer Learning từ ImageNet
-- Tự động feature extraction
-- Hiệu suất tốt với dữ liệu ít
+#### 4.2.1. Lý do chọn CNN (Thay vì Object Detection/YOLO)
+- **Hạn chế dữ liệu**: Bài toán Object Detection (như YOLO) yêu cầu dữ liệu gán nhãn bounding box rất lớn và tốn kém công sức. Nhóm hiện chỉ có bộ dữ liệu nhỏ (~200 ảnh).
+- **Chuyển đổi bài toán**: Nhóm quyết định điều chỉnh thành bài toán **Phân loại (Classification)** - chỉ xác định "Có sự cố" hay "Không" thay vì định vị vị trí.
+- **Transfer Learning**: MobileNetV2 pre-trained trên ImageNet hoạt động hiệu quả với dữ liệu ít, đạt độ chính xác tới 97%.
+- **Hiệu suất**: Đáp ứng tốt yêu cầu xử lý real-time trên CPU.
 
 #### 4.2.2. Kiến trúc Model
 ```
