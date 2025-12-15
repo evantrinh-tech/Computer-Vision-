@@ -1,0 +1,44 @@
+# Training Configuration
+# Cấu hình mặc định cho training pipeline
+
+model:
+  # ANN Configuration
+  hidden_layers: [64, 32]
+  activation: "relu"
+  dropout_rate: 0.2
+  learning_rate: 0.001
+  
+  # RBFNN Configuration
+  n_centers: 20
+  sigma: 1.0
+  use_wavelet: true
+  wavelet: "db4"
+  wavelet_level: 3
+  
+  # CNN Configuration
+  use_transfer_learning: true
+  base_model: "MobileNetV2"
+  image_size: [224, 224]
+  
+  # RNN Configuration
+  rnn_type: "LSTM"
+  hidden_units: [64, 32]
+
+preprocessing:
+  scaling_method: "standard"  # standard, minmax, robust
+  handle_outliers: true
+  outlier_threshold: 3.0
+
+training:
+  epochs: 100
+  batch_size: 32
+  validation_split: 0.1
+  test_split: 0.2
+
+data:
+  target_column: "has_incident"
+  feature_engineering:
+    include_wavelet: false
+    include_temporal: true
+    include_statistical: true
+
