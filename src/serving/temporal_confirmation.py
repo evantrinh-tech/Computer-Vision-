@@ -33,6 +33,17 @@ class IncidentEvent:
 
 
 class TemporalConfirmation:
+    """
+    TemporalConfirmation: Thuật toán lọc nhiễu và xác nhận sự cố theo thời gian.
+    
+    Vấn đề: Model AI có thể báo động giả (False Alarm) do nhiễu trong 1-2 frame.
+    Giải pháp: Chỉ xác nhận là "Sự cố" nếu sự cố tồn tại (persist) qua nhiều frame liên tiếp.
+    
+    Phương pháp:
+    1. K-Consecutive Frames: K frame liên tiếp đều vượt ngưỡng threshold.
+    2. Moving Average: Trung bình xác suất trong cửa sổ window_size vượt ngưỡng.
+    3. Cooldown: Sau khi xác nhận sự cố, không báo lại trong một khoảng thời gian (tránh spam alert).
+    """
 
     def __init__(
         self,
@@ -45,6 +56,13 @@ class TemporalConfirmation:
         use_moving_avg: bool = True,
         moving_avg_threshold: float = 0.4
     ):
+        """
+        Args:
+            k_frames: Số lượng frame liên tiếp cần để confirm.
+            window_size: Kích thước cửa sổ trượt (cho moving average).
+            threshold: Ngưỡng xác suất để coi là detection.
+            cooldown_seconds: Thời gian nghỉ giữa các lần cảnh báo.
+        """
         self.k_frames = k_frames
         self.window_size = window_size
         self.threshold = threshold
@@ -73,6 +91,11 @@ class TemporalConfirmation:
         probability: float,
         timestamp: Optional[float] = None
     ) -> Optional[IncidentEvent]:
+        """
+        Xử lý từng frame video hoặc từng mẫu dữ liệu time-series.
+        Returns:
+            IncidentEvent nếu sự cố được xác nhận (Confirmed), ngược lại None.
+        """
         if timestamp is None:
             timestamp = frame_number / self.fps if self.fps > 0 else frame_number
         

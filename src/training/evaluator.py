@@ -10,6 +10,17 @@ from src.models.base_model import BaseModel
 from src.utils.logger import logger
 
 class ModelEvaluator:
+    """
+    ModelEvaluator: Tính toán các chỉ số đánh giá độ chính xác của mô hình.
+    
+    Metrics:
+    - Accuracy: Độ chính xác tổng thể.
+    - Precision: Tỷ lệ phát hiện đúng trong số các lần báo động.
+    - Recall (Detection Rate): Tỷ lệ phát hiện được các sự cố thực tế.
+    - F1-Score: Trung bình điều hòa của Precision và Recall.
+    - False Alarm Rate (FAR): Tỷ lệ báo động giả.
+    - Mean Time To Detection (MTTD): Thời gian trung bình để phát hiện sự cố.
+    """
 
     def __init__(self):
 
@@ -22,6 +33,9 @@ class ModelEvaluator:
         y_true: np.ndarray,
         calculate_mttd: bool = False
     ) -> Dict[str, float]:
+        """
+        Đánh giá model trên tập dữ liệu X.
+        """
 
         start_time = time.time()
         y_pred = model.predict(X)

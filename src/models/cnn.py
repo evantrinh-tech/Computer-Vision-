@@ -9,6 +9,14 @@ from src.models.base_model import BaseModel
 from src.utils.logger import logger
 
 class CNNModel(BaseModel):
+    """
+    CNNModel: Mô hình Convolutional Neural Network sử dụng Transfer Learning.
+    
+    Đặc điểm:
+    - Sử dụng Backbone (MobileNetV2, ResNet50...) để trích xuất đặc trưng ảnh.
+    - Thêm các lớp Classification Head (Dense, Dropout) để phân loại (Normal/Incident).
+    - Hỗ trợ Fine-tuning để cải thiện độ chính xác trên tập dữ liệu cụ thể.
+    """
 
     def __init__(
         self,
@@ -18,6 +26,14 @@ class CNNModel(BaseModel):
         learning_rate: float = 0.001,
         config: Optional[Dict[str, Any]] = None
     ):
+        """
+        Khởi tạo CNN Model.
+        Args:
+            use_transfer_learning: Có dùng model pre-trained không (True/False).
+            base_model: Tên model nền (MobileNetV2, ResNet50, VGG16).
+            image_size: Kích thước ảnh đầu vào (width, height).
+            learning_rate: Tốc độ học ban đầu.
+        """
 
         super().__init__("CNN", config)
         self.use_transfer_learning = use_transfer_learning
@@ -28,6 +44,19 @@ class CNNModel(BaseModel):
         self.is_trained = False
 
     def build(self, input_shape: Tuple[int, ...], **kwargs) -> None:
+        """
+        Xây dựng kiến trúc mạng (Architecture).
+        
+        Quy trình:
+        1. Nếu dùng Transfer Learning:
+           - Load Pre-trained Base Model (ImageNet weights).
+           - Freeze (đóng băng) các layers của Base Model.
+           - Thêm GlobalAveragePooling để giảm chiều dữ liệu.
+           - Thêm Dense & Dropout để phân loại.
+        2. Nếu tự build (use_transfer_learning=False):
+           - Tạo mạng CNN thuần túy với Conv2D và MaxPooling2D.
+           - Phù hợp cho bài tập lớn nhỏ hoặc khi dữ liệu rất đơn giản.
+        """
 
         if self.use_transfer_learning:
             if self.base_model_name == 'MobileNetV2':
@@ -105,6 +134,17 @@ class CNNModel(BaseModel):
         verbose: int = 1,
         **kwargs
     ) -> Dict[str, Any]:
+        """
+        Huấn luyện mô hình.
+        
+        Quy trình:
+        1. Sử dụng ImageDataGenerator để Augmentation (làm giàu dữ liệu: xoay, lật...).
+        2. Train giai đoạn 1: Chỉ train các lớp Dense mới (Base mode bị đóng băng).
+        3. Train giai đoạn 2 (Fine-tuning): Mở khóa một phần Base model để train tiếp với learning rate nhỏ hơn.
+        
+        Returns:
+            Dictionary chứa lịch sử huấn luyện (loss, accuracy).
+        """
 
         if self.model is None:
             self.build(X_train.shape[1:])

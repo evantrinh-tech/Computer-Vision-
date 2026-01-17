@@ -1,4 +1,4 @@
-# 📊 PROTOCOL ĐÁNH GIÁ HỆ THỐNG PHÁT HIỆN SỰ CỐ GIAO THÔNG
+#  PROTOCOL ĐÁNH GIÁ HỆ THỐNG PHÁT HIỆN SỰ CỐ GIAO THÔNG
 
 ## 📋 MỤC LỤC
 

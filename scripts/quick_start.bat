@@ -22,7 +22,7 @@ if not exist "venv311\Scripts\activate.bat" (
     )
 )
 
-echo ✅ Virtual environment đã sẵn sàng
+echo  Virtual environment đã sẵn sàng
 echo.
 echo Đang khởi động giao diện web...
 echo.

@@ -53,7 +53,7 @@ Roadmap này mô tả kế hoạch phát triển hệ thống phát hiện sự 
 
 ### Tiêu chí nghiệm thu (Definition of Done)
 
-✅ **Hoàn thành Phase 1 khi:**
+ **Hoàn thành Phase 1 khi:**
 1. Model đạt Recall ≥ 0.85 và FAR ≤ 0.05 trên test set
 2. Temporal confirmation module hoạt động và giảm FAR ít nhất 30%
 3. Database schema đầy đủ, có migration scripts
@@ -64,7 +64,7 @@ Roadmap này mô tả kế hoạch phát triển hệ thống phát hiện sự 
 
 ---
 
-## 🚀 PHASE 2: HYBRID (Vision + Sensor Fusion)
+##  PHASE 2: HYBRID (Vision + Sensor Fusion)
 
 ### Mục tiêu đo lường
 
@@ -111,7 +111,7 @@ Roadmap này mô tả kế hoạch phát triển hệ thống phát hiện sự 
 
 ### Tiêu chí nghiệm thu
 
-✅ **Hoàn thành Phase 2 khi:**
+ **Hoàn thành Phase 2 khi:**
 1. Hybrid model đạt Recall ≥ 0.90 và FAR ≤ 0.03
 2. Hybrid model tốt hơn Vision-only ít nhất 5% về F1-score
 3. Real-time pipeline xử lý được ≥ 10 FPS
@@ -171,7 +171,7 @@ Roadmap này mô tả kế hoạch phát triển hệ thống phát hiện sự 
 
 ### Tiêu chí nghiệm thu
 
-✅ **Hoàn thành Phase 3 khi:**
+ **Hoàn thành Phase 3 khi:**
 1. Tất cả metrics đạt target
 2. System uptime ≥ 99.9% trong 1 tháng
 3. Có CI/CD pipeline tự động
@@ -182,7 +182,7 @@ Roadmap này mô tả kế hoạch phát triển hệ thống phát hiện sự 
 
 ---
 
-## 📊 TỔNG KẾT METRICS THEO PHASE
+##  TỔNG KẾT METRICS THEO PHASE
 
 | Metric | Phase 1 (MVP) | Phase 2 (Hybrid) | Phase 3 (Production) |
 |--------|--------------|------------------|----------------------|

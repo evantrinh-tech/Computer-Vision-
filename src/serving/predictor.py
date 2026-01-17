@@ -23,6 +23,15 @@ from src.utils.config import settings
 from src.utils.logger import logger
 
 class ModelPredictor:
+    """
+    ModelPredictor: Wrapper class để load model và thực hiện dự đoán (Inference).
+    
+    Chức năng:
+    - Tự động nhận diện loại model (ANN, CNN, RNN...) dựa trên tên file.
+    - Load model từ file (.h5, .keras, .pkl).
+    - Tiền xử lý dữ liệu đầu vào (Preprocessing) giống hệt lúc train.
+    - Thực hiện dự đoán (Predict).
+    """
 
     def __init__(self):
 

@@ -1,4 +1,4 @@
-# 📊 BASELINE & MODEL COMPARISON
+#  BASELINE & MODEL COMPARISON
 
 ## 📋 TÓM TẮT
 
@@ -122,11 +122,11 @@ Tuy nhiên, chúng ta chọn **Logistic Regression** làm baseline chính vì đ
 
 | Model | Architecture | Ưu điểm | Nhược điểm | So với Logistic Regression |
 |-------|--------------|---------|------------|----------------------------|
-| **Logistic Regression (Baseline)** | Linear classifier | ✅ Đơn giản<br>✅ Nhanh<br>✅ Interpretable | ❌ Không capture non-linear | **Baseline** |
-| **XGBoost** | Gradient Boosting | ✅ Hiệu suất tốt<br>✅ Feature importance | ❌ Phức tạp hơn<br>❌ Cần tune nhiều | +10-15% F1 |
-| **ANN** | Feed-forward NN | ✅ Non-linear<br>✅ Deep learning | ❌ Cần nhiều data<br>❌ Black box | +5-10% F1 |
-| **RNN/LSTM** | LSTM/GRU | ✅ Capture temporal patterns | ❌ Chậm hơn<br>❌ Phức tạp | +8-12% F1 (nếu có temporal) |
-| **RBFNN** | RBF + Wavelet | ✅ Xử lý non-linear tốt<br>✅ Wavelet transform | ❌ Phức tạp<br>❌ Cần tune nhiều | +5-8% F1 |
+| **Logistic Regression (Baseline)** | Linear classifier |  Đơn giản<br> Nhanh<br> Interpretable | ❌ Không capture non-linear | **Baseline** |
+| **XGBoost** | Gradient Boosting |  Hiệu suất tốt<br> Feature importance | ❌ Phức tạp hơn<br>❌ Cần tune nhiều | +10-15% F1 |
+| **ANN** | Feed-forward NN |  Non-linear<br> Deep learning | ❌ Cần nhiều data<br>❌ Black box | +5-10% F1 |
+| **RNN/LSTM** | LSTM/GRU |  Capture temporal patterns | ❌ Chậm hơn<br>❌ Phức tạp | +8-12% F1 (nếu có temporal) |
+| **RBFNN** | RBF + Wavelet |  Xử lý non-linear tốt<br> Wavelet transform | ❌ Phức tạp<br>❌ Cần tune nhiều | +5-8% F1 |
 
 **Kết luận**: Logistic Regression là baseline phù hợp cho Sensor Task. XGBoost có thể được sử dụng như một baseline nâng cao.
 
@@ -161,10 +161,10 @@ Tuy nhiên, chúng ta chọn **Logistic Regression** làm baseline chính vì đ
 
 | Method | Mô tả | Ưu điểm | Nhược điểm |
 |--------|-------|---------|------------|
-| **Late Fusion (Baseline)** | Weighted average của probabilities | ✅ Đơn giản<br>✅ Không cần retrain | ❌ Không tận dụng feature-level info |
-| **Voting** | Majority vote hoặc weighted vote | ✅ Đơn giản | ❌ Không tận dụng confidence |
-| **Early Fusion** | Concatenate features trước khi train | ✅ Tận dụng feature-level | ❌ Cần retrain<br>❌ Phức tạp |
-| **Attention-based Fusion** | Learn attention weights | ✅ Tự động học weights | ❌ Phức tạp<br>❌ Cần nhiều data |
+| **Late Fusion (Baseline)** | Weighted average của probabilities |  Đơn giản<br> Không cần retrain | ❌ Không tận dụng feature-level info |
+| **Voting** | Majority vote hoặc weighted vote |  Đơn giản | ❌ Không tận dụng confidence |
+| **Early Fusion** | Concatenate features trước khi train |  Tận dụng feature-level | ❌ Cần retrain<br>❌ Phức tạp |
+| **Attention-based Fusion** | Learn attention weights |  Tự động học weights | ❌ Phức tạp<br>❌ Cần nhiều data |
 
 ### 3.3. Tiêu chí Đánh giá cho Hybrid Task
 
@@ -181,10 +181,10 @@ Tuy nhiên, chúng ta chọn **Logistic Regression** làm baseline chính vì đ
 
 | Model | Vision Only | Sensor Only | Hybrid (Late Fusion) |
 |-------|-------------|-------------|----------------------|
-| **Recall** | 0.85 | 0.80 | **0.90** ✅ |
-| **Precision** | 0.80 | 0.75 | **0.85** ✅ |
-| **FAR** | 0.05 | 0.05 | **0.03** ✅ |
-| **F1-Score** | 0.82 | 0.77 | **0.87** ✅ |
+| **Recall** | 0.85 | 0.80 | **0.90**  |
+| **Precision** | 0.80 | 0.75 | **0.85**  |
+| **FAR** | 0.05 | 0.05 | **0.03**  |
+| **F1-Score** | 0.82 | 0.77 | **0.87**  |
 | **Latency** | 500ms | 100ms | 300ms |
 
 **Kết luận**: Hybrid model (Late Fusion) tốt hơn cả Vision-only và Sensor-only, đạt được mục tiêu cao hơn.
@@ -238,9 +238,9 @@ Tuy nhiên, chúng ta chọn **Logistic Regression** làm baseline chính vì đ
 
 ### 5.2. Tiêu chí So sánh Công bằng
 
-- ✅ So sánh các model **cùng task** (cùng loại dữ liệu đầu vào)
-- ✅ Sử dụng **cùng evaluation protocol** (train/val/test split, metrics)
-- ✅ So sánh trên **cùng dataset** (nếu có)
+-  So sánh các model **cùng task** (cùng loại dữ liệu đầu vào)
+-  Sử dụng **cùng evaluation protocol** (train/val/test split, metrics)
+-  So sánh trên **cùng dataset** (nếu có)
 - ❌ **KHÔNG** so sánh Vision với Sensor (khác loại dữ liệu)
 
 ### 5.3. Roadmap Nâng cấp

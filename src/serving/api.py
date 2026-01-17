@@ -14,7 +14,7 @@ from src.utils.logger import logger
 
 app = FastAPI(
     title="Traffic Incident Detection API",
-    description="API để phát hiện sự cố giao thông sử dụng Neural Network",
+    description="API để phát hiện sự cố giao thông sử dụng Neural Network (CNN, RNN, RBFNN...)",
     version="0.1.0"
 )
 
@@ -30,12 +30,14 @@ predictor = ModelPredictor()
 metrics_collector = MetricsCollector()
 
 class SensorData(BaseModel):
-
-    timestamp: str
-    detector_id: str
-    volume: float = Field(..., ge=0, description="Lưu lượng xe")
-    speed: float = Field(..., ge=0, le=200, description="Tốc độ (km/h)")
-    occupancy: float = Field(..., ge=0, le=1, description="Độ chiếm dụng (0-1)")
+    """
+    Schema dữ liệu cảm biến đầu vào.
+    """
+    timestamp: str = Field(..., description="Thời gian ghi nhận (ISO format)")
+    detector_id: str = Field(..., description="ID của cảm biến/camera")
+    volume: float = Field(..., ge=0, description="Lưu lượng xe (vehicles/hour)")
+    speed: float = Field(..., ge=0, le=200, description="Tốc độ trung bình (km/h)")
+    occupancy: float = Field(..., ge=0, le=1, description="Độ chiếm dụng mặt đường (0.0 - 1.0)")
 
 class PredictionRequest(BaseModel):
 
@@ -55,7 +57,9 @@ class HealthResponse(BaseModel):
 
 @app.get("/", tags=["General"])
 async def root():
-
+    """
+    Trang chủ API.
+    """
     return {
         "message": "Traffic Incident Detection API",
         "version": "0.1.0",
@@ -77,6 +81,11 @@ async def predict(
     request: PredictionRequest,
     background_tasks: BackgroundTasks
 ):
+    """
+    Endpoint nhận dữ liệu giao thông và trả về kết quả dự đoán sự cố.
+    - Xử lý Batch prediction (nhiều mẫu cùng lúc).
+    - Log metrics xuống background task để không chặn request.
+    """
 
     import time
     start_time = time.time()

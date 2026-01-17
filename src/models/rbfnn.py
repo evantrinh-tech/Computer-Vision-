@@ -9,6 +9,19 @@ from src.models.base_model import BaseModel
 from src.utils.logger import logger
 
 class RBFNNModel(BaseModel):
+    """
+    RBFNNModel: Mạng Nơ-ron Radial Basis Function.
+    
+    Đặc điểm:
+    - Sử dụng hàm cơ sở xuyên tâm (Radial Basis Function - thường là Gaussian) làm hàm kích hoạt.
+    - Huấn luyện qua 2 giai đoạn:
+      1. Unsupervised: Tìm các Centers bằng thuật toán K-Means Clustering.
+      2. Supervised: Tính toán weights kết nối từ lớp ẩn đến lớp output (dùng Linear Regression hoặc Pseudo-inverse).
+    
+    Ưu điểm:
+    - Train rất nhanh (không cần Backpropagation phức tạp).
+    - Khả năng xấp xỉ hàm tốt.
+    """
 
     def __init__(
         self,
@@ -20,6 +33,13 @@ class RBFNNModel(BaseModel):
         wavelet_level: int = 3,
         config: Optional[Dict[str, Any]] = None
     ):
+        """
+        Khởi tạo RBFNN Model.
+        Args:
+            n_centers: Số lượng tâm (clusters) cho lớp ẩn. Tương đương số nơ-ron ẩn.
+            sigma: Độ rộng (spread) của hàm Gaussian.
+            use_wavelet: Có sử dụng biến đổi Wavelet để trích xuất đặc trưng trước không.
+        """
 
         super().__init__("RBFNN", config)
         self.n_centers = n_centers
@@ -36,7 +56,10 @@ class RBFNNModel(BaseModel):
         self.is_trained = False
 
     def _gaussian_rbf(self, X: np.ndarray, center: np.ndarray) -> np.ndarray:
-
+        """
+        Hàm Gaussian Radial Basis Function.
+        Công thức: exp(-||x - center||^2 / (2 * sigma^2))
+        """
         distances = np.sum((X - center) ** 2, axis=1)
         return np.exp(-distances / (2 * self.sigma ** 2))
 
@@ -78,6 +101,14 @@ class RBFNNModel(BaseModel):
         verbose: int = 1,
         **kwargs
     ) -> Dict[str, Any]:
+        """
+        Huấn luyện RBFNN.
+        
+        Quy trình:
+        1. K-Means Clustering: Tìm k tâm (centers) đại diện cho dữ liệu.
+        2. Tính RBF Activations: Tính khoảng cách từ mỗi điểm dữ liệu đến các tâm.
+        3. Linear Regression: Tính weights tối ưu bằng phương pháp bình phương tối thiểu (Least Squares).
+        """
 
         X_train_scaled = self.scaler.fit_transform(X_train)
 

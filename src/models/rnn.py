@@ -9,6 +9,18 @@ from src.models.base_model import BaseModel
 from src.utils.logger import logger
 
 class RNNModel(BaseModel):
+    """
+    RNNModel: Mạng Nơ-ron Tái phát (Recurrent Neural Network).
+    
+    Hỗ trợ:
+    - LSTM (Long Short-Term Memory): Tốt cho việc ghi nhớ sự phụ thuộc dài hạn.
+    - GRU (Gated Recurrent Unit): Phiên bản đơn giản hóa của LSTM, train nhanh hơn.
+    
+    Ứng dụng:
+    - Xử lý dữ liệu chuỗi (Time-series data).
+    - Phân tích video (xem video như chuỗi các frame).
+    - Dự đoán hành vi dựa trên lịch sử.
+    """
 
     def __init__(
         self,
@@ -18,6 +30,13 @@ class RNNModel(BaseModel):
         learning_rate: float = 0.001,
         config: Optional[Dict[str, Any]] = None
     ):
+        """
+        Khởi tạo RNN Model.
+        Args:
+            rnn_type: Loại mạng ('LSTM' hoặc 'GRU').
+            hidden_units: List số units cho từng layer.
+            dropout_rate: Tỷ lệ Dropout.
+        """
 
         super().__init__("RNN", config)
         self.rnn_type = rnn_type.upper()
@@ -31,6 +50,9 @@ class RNNModel(BaseModel):
             raise ValueError(f"RNN type phải là 'LSTM' hoặc 'GRU', nhận được: {rnn_type}")
 
     def build(self, input_shape: Tuple[int, ...], **kwargs) -> None:
+        """
+        Xây dựng kiến trúc mạng RNN (Stacked LSTM/GRU).
+        """
 
         inputs = keras.Input(shape=input_shape)
         x = inputs
@@ -85,6 +107,9 @@ class RNNModel(BaseModel):
         verbose: int = 1,
         **kwargs
     ) -> Dict[str, Any]:
+        """
+        Huấn luyện mô hình RNN với dữ liệu chuỗi (Sequence of frames/vectors).
+        """
 
         if self.model is None:
             self.build(X_train.shape[1:])

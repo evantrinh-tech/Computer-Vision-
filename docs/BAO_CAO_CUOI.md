@@ -198,12 +198,12 @@ Output: Dense(1, sigmoid) - Binary Classification
 
 | Metric | Value | Target | Status |
 |--------|-------|--------|--------|
-| **Recall** | 0.87 | ≥ 0.85 | ✅ Đạt |
-| **Precision** | 0.83 | ≥ 0.80 | ✅ Đạt |
-| **F1-Score** | 0.85 | ≥ 0.82 | ✅ Đạt |
-| **FAR** | 0.04 (4%) | ≤ 0.05 | ✅ Đạt |
-| **MTTD** | 8.5s | ≤ 10s | ✅ Đạt |
-| **Latency p95** | 450ms | ≤ 500ms | ✅ Đạt |
+| **Recall** | 0.87 | ≥ 0.85 |  Đạt |
+| **Precision** | 0.83 | ≥ 0.80 |  Đạt |
+| **F1-Score** | 0.85 | ≥ 0.82 |  Đạt |
+| **FAR** | 0.04 (4%) | ≤ 0.05 |  Đạt |
+| **MTTD** | 8.5s | ≤ 10s |  Đạt |
+| **Latency p95** | 450ms | ≤ 500ms |  Đạt |
 
 ### 6.2. Phân tích False Positives
 
@@ -291,7 +291,7 @@ Output: Dense(1, sigmoid) - Binary Classification
 
 ## 8. ROADMAP NÂNG CẤP - 1 trang
 
-### 8.1. Phase 1: MVP (Hiện tại) ✅
+### 8.1. Phase 1: MVP (Hiện tại) 
 - CNN baseline
 - Temporal confirmation
 - Basic dashboard
@@ -390,7 +390,7 @@ events = confirmer.process_stream(probabilities)
 
 ---
 
-## 📊 CHECKLIST TRƯỚC KHI NỘP
+##  CHECKLIST TRƯỚC KHI NỘP
 
 - [ ] Tất cả metrics đã được tính và verify
 - [ ] Biểu đồ đã được tạo (PR, ROC, Confusion Matrix, FAR vs Recall, Latency, MTTD)

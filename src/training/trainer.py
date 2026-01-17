@@ -17,9 +17,25 @@ from src.utils.config import settings
 from src.utils.logger import logger
 
 class ModelTrainer:
+    """
+    ModelTrainer: Quản lý toàn bộ quy trình huấn luyện mô hình.
+    
+    Chức năng:
+    - Load cấu hình từ file YAML.
+    - Khởi tạo model (ANN, CNN, RNN, RBFNN).
+    - Chuẩn bị dữ liệu (Preprocessing, Feature Engineering, Splitting).
+    - Huấn luyện model (Training loop/fit).
+    - Đánh giá model (Evaluation).
+    - Log kết quả vào MLflow.
+    """
 
     def __init__(self, model_type: str = 'ANN', config_path: Optional[Path] = None):
-
+        """
+        Khởi tạo Trainer.
+        Args:
+            model_type: Loại model ('ANN', 'CNN', 'RNN', 'RBFNN').
+            config_path: Đường dẫn file cấu hình (.yaml).
+        """
         self.model_type = model_type.upper()
         self.config = self._load_config(config_path) if config_path else {}
         self.model = None
@@ -31,7 +47,7 @@ class ModelTrainer:
         try:
             mlflow.set_tracking_uri(settings.mlflow_tracking_uri)
             mlflow.set_experiment(settings.mlflow_experiment_name)
-            logger.info(f"✅ MLflow initialized: {settings.mlflow_tracking_uri}")
+            logger.info(f" MLflow initialized: {settings.mlflow_tracking_uri}")
         except Exception as e:
             self.use_mlflow = False
             logger.warning(f"⚠️ MLflow không khả dụng (training vẫn tiếp tục): {str(e)[:100]}")
@@ -84,6 +100,18 @@ class ModelTrainer:
         test_size: float = 0.2,
         val_size: float = 0.1
     ) -> Tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray, np.ndarray, np.ndarray]:
+        """
+        Chuẩn bị dữ liệu cho huấn luyện.
+        
+        Args:
+            df: DataFrame chứa data (cho các model sensor).
+            data_path: Đường dẫn thư mục ảnh (cho model CNN).
+            test_size: Tỷ lệ tập test (ví dụ 0.2 = 20%).
+            val_size: Tỷ lệ tập validation (trong phần còn lại sau khi tách test).
+            
+        Returns:
+            X_train, y_train, X_val, y_val, X_test, y_test
+        """
 
         if self.model_type == 'CNN' and data_path is not None:
             return self._prepare_image_data(data_path, test_size, val_size)
@@ -235,6 +263,16 @@ class ModelTrainer:
         y_val: Optional[np.ndarray] = None,
         run_name: Optional[str] = None
     ) -> Dict[str, Any]:
+        """
+        Thực hiện huấn luyện model.
+        
+        Quy trình:
+        1. Build model architecture.
+        2. Fit model với training data.
+        3. Evaluate trên train & validation set.
+        4. Save model xuống đĩa.
+        5. Log params & metrics lên MLflow.
+        """
 
         self.model = self._create_model()
         if self.model_type == 'CNN':

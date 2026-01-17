@@ -17,11 +17,13 @@ if sys.platform == 'win32' and 'streamlit' not in sys.modules:
     except:
         pass
 
+# Thêm thư mục gốc vào path để import modules
 sys.path.insert(0, str(Path(__file__).parent))
 
+# Cấu hình trang Streamlit (Tiêu đề, icon, layout rộng)
 st.set_page_config(
     page_title="Hệ thống Phát hiện Sự cố Giao thông",
-    page_icon="🚦",
+    page_icon="",
     layout="wide",
     initial_sidebar_state="expanded"
 )
@@ -34,7 +36,10 @@ if 'model_loaded' not in st.session_state:
     st.session_state.model_loaded = False
 
 def load_image_files(folder_path: Path):
-
+    """
+    Hàm tiện ích để load danh sách file ảnh trong folder.
+    Hỗ trợ các đuôi file: .jpg, .jpeg, .png, .webp, .gif
+    """
     extensions = ['*.jpg', '*.jpeg', '*.png', '*.webp', '*.gif']
     image_files = []
     for ext in extensions:
@@ -59,20 +64,22 @@ def get_image_count():
     return normal_count, incident_count
 
 try:
-    st.sidebar.title("🚦 Hệ thống Phát hiện Sự cố")
+    st.sidebar.title(" Hệ thống Phát hiện Sự cố")
     st.sidebar.markdown("---")
 
+    # Menu điều hướng dùng Radio Button
     page = st.sidebar.radio(
         "Chọn chức năng:",
-        ["🏠 Trang chủ", "📊 Xem dữ liệu", "🎓 Huấn luyện mô hình", "🔍 Test mô hình", "📈 Kết quả & Metrics"]
+        [" Trang chủ", " Xem dữ liệu", " Huấn luyện mô hình", " Test mô hình", " Kết quả & Metrics"]
     )
 except Exception as e:
+    # Fallback nếu lỗi sidebar
     st.error(f"Lỗi khi khởi tạo sidebar: {e}")
     st.exception(e)
-    page = "🏠 Trang chủ"
+    page = " Trang chủ"
 
-if page == "🏠 Trang chủ":
-    st.markdown('<div class="main-header">🚦 Hệ thống Phát hiện Sự cố Giao thông</div>', unsafe_allow_html=True)
+if page == " Trang chủ":
+    st.markdown('<div class="main-header"> Hệ thống Phát hiện Sự cố Giao thông</div>', unsafe_allow_html=True)
     st.markdown("---")
 
     col1, col2, col3 = st.columns(3)
@@ -83,7 +90,7 @@ if page == "🏠 Trang chủ":
     with col1:
         st.metric("📁 Tổng số ảnh", total_images)
     with col2:
-        st.metric("✅ Ảnh bình thường", normal_count)
+        st.metric(" Ảnh bình thường", normal_count)
     with col3:
         st.metric("⚠️ Ảnh có sự cố", incident_count)
 
@@ -91,23 +98,23 @@ if page == "🏠 Trang chủ":
 
     st.markdown("### 📋 Tổng quan hệ thống")
 
-    st.markdown("### 🚀 Hướng dẫn sử dụng")
+    st.markdown("###  Hướng dẫn sử dụng")
 
     model_path = Path("models/CNN_model")
     if model_path.exists():
-        st.success("✅ Đã có mô hình được huấn luyện")
+        st.success(" Đã có mô hình được huấn luyện")
     else:
         st.warning("⚠️ Chưa có mô hình. Vui lòng huấn luyện mô hình trước khi sử dụng.")
 
-elif page == "📊 Xem dữ liệu":
-    st.title("📊 Xem dữ liệu")
+elif page == " Xem dữ liệu":
+    st.title(" Xem dữ liệu")
     st.markdown("---")
 
     data_path = Path("data/images")
     normal_dir = data_path / "normal"
     incident_dir = data_path / "incident"
 
-    tab1, tab2 = st.tabs(["✅ Ảnh bình thường", "⚠️ Ảnh có sự cố"])
+    tab1, tab2 = st.tabs([" Ảnh bình thường", "⚠️ Ảnh có sự cố"])
 
     with tab1:
         st.subheader("Ảnh bình thường (Normal)")
@@ -159,8 +166,8 @@ elif page == "📊 Xem dữ liệu":
                             except Exception as e:
                                 col.error(f"Không thể load: {img_file.name}")
 
-elif page == "🎓 Huấn luyện mô hình":
-    st.title("🎓 Huấn luyện mô hình CNN")
+elif page == " Huấn luyện mô hình":
+    st.title(" Huấn luyện mô hình CNN")
     st.markdown("---")
 
     normal_count, incident_count = get_image_count()
@@ -170,9 +177,9 @@ elif page == "🎓 Huấn luyện mô hình":
         st.error("❌ Không tìm thấy ảnh để huấn luyện!")
         st.info("Vui lòng đảm bảo có ảnh trong `data/images/normal/` và `data/images/incident/`")
     else:
-        st.success(f"✅ Tìm thấy {normal_count} ảnh bình thường và {incident_count} ảnh có sự cố")
+        st.success(f" Tìm thấy {normal_count} ảnh bình thường và {incident_count} ảnh có sự cố")
 
-        st.markdown("### ⚙️ Cấu hình huấn luyện")
+        st.markdown("###  Cấu hình huấn luyện")
 
         col1, col2 = st.columns(2)
 
@@ -184,12 +191,13 @@ elif page == "🎓 Huấn luyện mô hình":
             use_transfer_learning = st.checkbox("Sử dụng Transfer Learning", value=True)
             image_size = st.selectbox("Kích thước ảnh", [(224, 224), (256, 256), (128, 128)], format_func=lambda x: f"{x[0]}x{x[1]}")
 
-        if st.button("🚀 Bắt đầu huấn luyện", type="primary", use_container_width=True):
+        if st.button(" Bắt đầu huấn luyện", type="primary", use_container_width=True):
             if st.session_state.training_in_progress:
                 st.warning("⚠️ Đang có quá trình huấn luyện khác đang chạy!")
             else:
                 st.session_state.training_in_progress = True
 
+                # Container để hiển thị log quá trình training
                 status_container = st.container()
                 progress_bar = st.progress(0)
 
@@ -204,10 +212,10 @@ elif page == "🎓 Huấn luyện mô hình":
                         import mlflow
 
                         progress_bar.progress(20)
-                        status_text.info("✅ Đã import xong các thư viện")
+                        status_text.info(" Đã import xong các thư viện")
 
                         progress_bar.progress(30)
-                        status_text.info("⚙️ Đang load cấu hình...")
+                        status_text.info(" Đang load cấu hình...")
                         config_path = Path("configs/training_config.yaml")
                         if not config_path.exists():
                             config_path = None
@@ -215,19 +223,19 @@ elif page == "🎓 Huấn luyện mô hình":
 
                         progress_bar.progress(40)
 
-                        status_text.info("🎓 Đang khởi tạo trainer...")
+                        status_text.info(" Đang khởi tạo trainer...")
                         try:
                             trainer = ModelTrainer(model_type='CNN', config_path=config_path)
                             if trainer.use_mlflow:
-                                status_text.info("✅ Trainer đã sẵn sàng (MLflow tracking: ON)")
+                                status_text.info(" Trainer đã sẵn sàng (MLflow tracking: ON)")
                             else:
-                                status_text.info("✅ Trainer đã sẵn sàng (MLflow tracking: OFF - training vẫn hoạt động bình thường)")
+                                status_text.info(" Trainer đã sẵn sàng (MLflow tracking: OFF - training vẫn hoạt động bình thường)")
                         except Exception as trainer_error:
                             status_text.error(f"❌ Lỗi khi khởi tạo trainer: {trainer_error}")
                             raise
 
                         progress_bar.progress(60)
-                        status_text.success("✅ Đã khởi tạo trainer thành công!")
+                        status_text.success(" Đã khởi tạo trainer thành công!")
 
                         if use_transfer_learning:
                             trainer.config['model'] = trainer.config.get('model', {})
@@ -238,10 +246,11 @@ elif page == "🎓 Huấn luyện mô hình":
                         trainer.config['training']['epochs'] = epochs
                         trainer.config['training']['batch_size'] = batch_size
 
-                        status_text.info("📊 Đang chuẩn bị dữ liệu (load và xử lý ảnh)...")
+                        status_text.info(" Đang chuẩn bị dữ liệu (load và xử lý ảnh)...")
                         progress_bar.progress(65)
 
                         data_path = Path("data/images")
+                        # Chia dataset: 70% train, 10% val, 20% test
                         X_train, y_train, X_val, y_val, X_test, y_test = trainer.prepare_data(
                             data_path=data_path,
                             test_size=0.2,
@@ -249,9 +258,9 @@ elif page == "🎓 Huấn luyện mô hình":
                         )
 
                         progress_bar.progress(70)
-                        status_text.success(f"✅ Đã chuẩn bị: {len(X_train)} train, {len(X_val)} val, {len(X_test)} test")
+                        status_text.success(f" Đã chuẩn bị: {len(X_train)} train, {len(X_val)} val, {len(X_test)} test")
 
-                        status_text.info("🚀 Đang huấn luyện mô hình... (Quá trình này có thể mất 10-30 phút tùy vào số lượng ảnh)")
+                        status_text.info(" Đang huấn luyện mô hình... (Quá trình này có thể mất 10-30 phút tùy vào số lượng ảnh)")
                         progress_bar.progress(75)
 
                         training_results = trainer.train(
@@ -262,11 +271,11 @@ elif page == "🎓 Huấn luyện mô hình":
 
                         progress_bar.progress(90)
 
-                        st.info("📈 Đang đánh giá mô hình...")
+                        st.info(" Đang đánh giá mô hình...")
                         test_metrics = trainer.evaluate_on_test(X_test, y_test)
 
                         progress_bar.progress(100)
-                        status_text.text("✅ Hoàn tất!")
+                        status_text.text(" Hoàn tất!")
 
                         st.session_state.training_results = {
                             'train_metrics': training_results.get('train_metrics', {}),
@@ -279,7 +288,7 @@ elif page == "🎓 Huấn luyện mô hình":
 
                         st.success("🎉 Huấn luyện hoàn tất!")
 
-                        st.markdown("### 📊 Kết quả huấn luyện")
+                        st.markdown("###  Kết quả huấn luyện")
 
                         col1, col2, col3 = st.columns(3)
                         with col1:
@@ -294,8 +303,8 @@ elif page == "🎓 Huấn luyện mô hình":
                         st.exception(e)
                         st.session_state.training_in_progress = False
 
-elif page == "🔍 Test mô hình":
-    st.title("🔍 Test mô hình")
+elif page == " Test mô hình":
+    st.title(" Test mô hình")
     st.markdown("---")
 
     model_path = Path("models/CNN_model")
@@ -304,7 +313,7 @@ elif page == "🔍 Test mô hình":
         st.warning("⚠️ Chưa có mô hình được huấn luyện!")
         st.info("Vui lòng huấn luyện mô hình trước (trang 'Huấn luyện mô hình')")
     else:
-        st.success("✅ Đã tìm thấy mô hình")
+        st.success(" Đã tìm thấy mô hình (Ready to predict)")
 
         try:
             from src.models.cnn import CNNModel
@@ -329,7 +338,7 @@ elif page == "🔍 Test mô hình":
                 img = Image.open(uploaded_file)
                 st.image(img, caption="Ảnh đã upload", use_container_width=True)
 
-                if st.button("🔍 Phân tích ảnh", type="primary"):
+                if st.button(" Phân tích ảnh", type="primary"):
                     with st.spinner("Đang xử lý..."):
                         try:
                             temp_path = Path("temp_upload.jpg")
@@ -343,7 +352,7 @@ elif page == "🔍 Test mô hình":
 
                             temp_path.unlink()
 
-                            st.markdown("### 📊 Kết quả phân tích")
+                            st.markdown("###  Kết quả phân tích")
 
                             col1, col2 = st.columns(2)
 
@@ -351,7 +360,7 @@ elif page == "🔍 Test mô hình":
                                 if prediction[0]:
                                     st.error("⚠️ **PHÁT HIỆN SỰ CỐ**")
                                 else:
-                                    st.success("✅ **BÌNH THƯỜNG**")
+                                    st.success(" **BÌNH THƯỜNG**")
 
                             with col2:
                                 st.metric("Xác suất", f"{probability[0]:.4f}")
@@ -388,7 +397,7 @@ elif page == "🔍 Test mô hình":
                         img = Image.open(img_path)
                         st.image(img, caption=img_path.name, use_container_width=True)
 
-                        if st.button("🔍 Phân tích ảnh này", type="primary"):
+                        if st.button(" Phân tích ảnh này", type="primary"):
                             with st.spinner("Đang xử lý..."):
                                 try:
                                     image = st.session_state.image_processor.load_image(img_path)
@@ -397,7 +406,7 @@ elif page == "🔍 Test mô hình":
                                     prediction = st.session_state.cnn_model.predict(np.array([processed]))
                                     probability = st.session_state.cnn_model.predict_proba(np.array([processed]))
 
-                                    st.markdown("### 📊 Kết quả phân tích")
+                                    st.markdown("###  Kết quả phân tích")
 
                                     col1, col2 = st.columns(2)
 
@@ -405,7 +414,7 @@ elif page == "🔍 Test mô hình":
                                         if prediction[0]:
                                             st.error("⚠️ **PHÁT HIỆN SỰ CỐ**")
                                         else:
-                                            st.success("✅ **BÌNH THƯỜNG**")
+                                            st.success(" **BÌNH THƯỜNG**")
 
                                     with col2:
                                         st.metric("Xác suất", f"{probability[0]:.4f}")
@@ -414,7 +423,7 @@ elif page == "🔍 Test mô hình":
                                     actual = "Có sự cố" if prediction[0] else "Bình thường"
 
                                     if expected == actual:
-                                        st.success(f"✅ Dự đoán đúng! (Expected: {expected})")
+                                        st.success(f" Dự đoán đúng! (Expected: {expected})")
                                     else:
                                         st.warning(f"⚠️ Dự đoán sai! (Expected: {expected}, Got: {actual})")
 
@@ -430,14 +439,14 @@ elif page == "🔍 Test mô hình":
             st.error(f"❌ Lỗi khi load mô hình: {str(e)}")
             st.exception(e)
 
-elif page == "📈 Kết quả & Metrics":
-    st.title("📈 Kết quả & Metrics")
+elif page == " Kết quả & Metrics":
+    st.title(" Kết quả & Metrics")
     st.markdown("---")
 
     if st.session_state.training_results:
         results = st.session_state.training_results
 
-        st.markdown("### 📊 Metrics huấn luyện")
+        st.markdown("###  Metrics huấn luyện")
 
         col1, col2, col3, col4 = st.columns(4)
 
@@ -488,7 +497,7 @@ elif page == "📈 Kết quả & Metrics":
 
     model_path = Path("models/CNN_model")
     if model_path.exists():
-        st.success("✅ Mô hình đã được huấn luyện")
+        st.success(" Mô hình đã được huấn luyện")
         st.code(str(model_path.absolute()))
     else:
         st.warning("⚠️ Chưa có mô hình được huấn luyện")

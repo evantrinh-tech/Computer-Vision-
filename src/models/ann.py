@@ -29,7 +29,11 @@ class ANNModel(BaseModel):
         """
         Khởi tạo ANN Model.
         Args:
+<<<<<<< HEAD
             hidden_layers: List số lượng nơ-ron cho từng lớp ẩn (VD: [64, 32]).
+=======
+            hidden_layers: List số lượng nơ-roC:\Users\dat02\OneDrive\Documents\UTH 2023-2027\Computer Vision\Computer vision\ITS\src\modelsn cho từng lớp ẩn (VD: [64, 32]).
+>>>>>>> 8b941ce (Initial release: Traffic Incident Detection System with full documentation)
             activation: Hàm kích hoạt (relu, tanh, sigmoid...).
             dropout_rate: Tỷ lệ Dropout để chống overfitting.
         """

@@ -8,9 +8,15 @@ from PIL import Image
 from src.utils.logger import logger
 
 class ImageProcessor:
+    """
+    ImageProcessor: Xử lý ảnh tĩnh (resize, normalize, convert color).
+    """
 
     def __init__(self, image_size: Tuple[int, int] = (224, 224)):
-
+        """
+        Args:
+            image_size: Kích thước ảnh đầu ra mong muốn (width, height).
+        """
         self.image_size = image_size
 
     def load_image(self, image_path: Path) -> np.ndarray:
@@ -35,11 +41,17 @@ class ImageProcessor:
         return image
 
     def preprocess_image(self, image: np.ndarray) -> np.ndarray:
-
+        """
+        Tiền xử lý ảnh trước khi đưa vào model.
+        Quy trình: Resizing -> RGB Conversion -> Normalization (0-1).
+        """
+        # 1. Resize về kích thước model yêu cầu (VD: 224x224)
         resized = cv2.resize(image, self.image_size)
 
+        # 2. Chuyển từ BGR (OpenCV) sang RGB
         rgb_image = cv2.cvtColor(resized, cv2.COLOR_BGR2RGB)
 
+        # 3. Chuẩn hóa pixel về khoảng [0, 1]
         normalized = rgb_image.astype(np.float32) / 255.0
 
         return normalized
@@ -55,6 +67,10 @@ class ImageProcessor:
         return roi
 
 class VideoProcessor:
+    """
+    VideoProcessor: Xử lý video (load, extract frames, stream processing).
+    Sử dụng ImageProcessor để xử lý từng frame.
+    """
 
     def __init__(
         self,

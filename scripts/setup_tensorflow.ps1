@@ -82,7 +82,7 @@ python -c "import tensorflow as tf; print(f'✓ TensorFlow {tf.__version__} đã
 if ($LASTEXITCODE -eq 0) {
     Write-Host ""
     Write-Host "========================================" -ForegroundColor Green
-    Write-Host "✅ CÀI ĐẶT THÀNH CÔNG!" -ForegroundColor Green
+    Write-Host " CÀI ĐẶT THÀNH CÔNG!" -ForegroundColor Green
     Write-Host "========================================" -ForegroundColor Green
     Write-Host ""
     Write-Host "Để sử dụng:" -ForegroundColor Cyan

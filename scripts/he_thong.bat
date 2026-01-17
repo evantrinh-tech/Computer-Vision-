@@ -14,11 +14,11 @@ echo.
 echo Chọn chức năng:
 echo.
 echo [1] 🖥️  Giao diện Web (Streamlit) - KHUYẾN NGHỊ
-echo [2] 🚀 Chạy API Server
-echo [3] 🎓 Huấn luyện mô hình
-echo [4] 🔍 Test mô hình
-echo [5] 📊 Kiểm tra trạng thái hệ thống
-echo [6] ⚙️  Tạo Virtual Environment
+echo [2]  Chạy API Server
+echo [3]  Huấn luyện mô hình
+echo [4]  Test mô hình
+echo [5]  Kiểm tra trạng thái hệ thống
+echo [6]   Tạo Virtual Environment
 echo [7] 🗄️  Setup Database
 echo [0] ❌ Thoát
 echo.
@@ -55,7 +55,7 @@ if errorlevel 1 (
     pause
     goto MENU
 )
-echo ✅ Đã kích hoạt virtual environment
+echo  Đã kích hoạt virtual environment
 echo.
 python -c "import streamlit" 2>nul
 if errorlevel 1 (
@@ -67,10 +67,10 @@ if errorlevel 1 (
         pause
         goto MENU
     )
-    echo ✅ Đã cài đặt Streamlit
+    echo  Đã cài đặt Streamlit
     echo.
 )
-echo 🚀 Đang khởi động giao diện web...
+echo  Đang khởi động giao diện web...
 echo.
 echo 📌 Giao diện sẽ mở tại: http://localhost:8501
 echo 📌 Nhấn Ctrl+C để dừng server
@@ -102,7 +102,7 @@ if errorlevel 1 (
     pause
     goto MENU
 )
-echo ✅ Đã kích hoạt virtual environment
+echo  Đã kích hoạt virtual environment
 echo.
 echo API Server sẽ chạy tại: http://localhost:8000
 echo Documentation: http://localhost:8000/docs
@@ -157,7 +157,7 @@ if errorlevel 1 (
     pause
     goto TRAIN_MENU
 )
-echo ✅ Đã kích hoạt virtual environment
+echo  Đã kích hoạt virtual environment
 echo.
 if not exist "data\images\normal" (
     echo ❌ Lỗi: Không tìm thấy folder data\images\normal
@@ -173,7 +173,7 @@ if not exist "data\images\incident" (
 )
 echo 📁 Đã tìm thấy folder ảnh
 echo.
-echo 🚀 Bắt đầu huấn luyện mô hình CNN...
+echo  Bắt đầu huấn luyện mô hình CNN...
 echo    (Quá trình này có thể mất nhiều thời gian)
 echo.
 python train_cnn.py
@@ -198,7 +198,7 @@ if errorlevel 1 (
     pause
     goto TRAIN_MENU
 )
-echo ✅ Đã kích hoạt virtual environment
+echo  Đã kích hoạt virtual environment
 echo.
 echo Đang train ANN model với dữ liệu mô phỏng...
 echo (Có thể mất vài phút)
@@ -226,7 +226,7 @@ if errorlevel 1 (
     pause
     goto TRAIN_MENU
 )
-echo ✅ Đã kích hoạt virtual environment
+echo  Đã kích hoạt virtual environment
 echo.
 echo Đang train RNN model với dữ liệu mô phỏng...
 echo (Có thể mất vài phút)
@@ -254,7 +254,7 @@ if errorlevel 1 (
     pause
     goto TRAIN_MENU
 )
-echo ✅ Đã kích hoạt virtual environment
+echo  Đã kích hoạt virtual environment
 echo.
 echo Đang train RBFNN model với dữ liệu mô phỏng...
 echo.
@@ -307,7 +307,7 @@ if errorlevel 1 (
     pause
     goto TEST_MENU
 )
-echo ✅ Đã kích hoạt virtual environment
+echo  Đã kích hoạt virtual environment
 echo.
 set /p image_path="Nhập đường dẫn ảnh hoặc thư mục (Enter để bỏ qua): "
 if "%image_path%"=="" (
@@ -338,7 +338,7 @@ if errorlevel 1 (
     pause
     goto TEST_MENU
 )
-echo ✅ Đã kích hoạt virtual environment
+echo  Đã kích hoạt virtual environment
 echo.
 set /p video_path="Nhập đường dẫn video: "
 if "%video_path%"=="" (
@@ -369,7 +369,7 @@ if errorlevel 1 (
     pause
     goto TEST_MENU
 )
-echo ✅ Đã kích hoạt virtual environment
+echo  Đã kích hoạt virtual environment
 echo.
 echo Đang test API tại http://localhost:8000
 echo.
@@ -399,11 +399,11 @@ if errorlevel 1 (
     pause
     goto TEST_MENU
 )
-echo ✅ Đã kích hoạt virtual environment
+echo  Đã kích hoạt virtual environment
 echo.
 echo Đang test Temporal Confirmation module...
 echo.
-python -c "from src.serving.temporal_confirmation import TemporalConfirmation; print('✅ Temporal Confirmation module OK')"
+python -c "from src.serving.temporal_confirmation import TemporalConfirmation; print(' Temporal Confirmation module OK')"
 echo.
 pause
 goto TEST_MENU
@@ -428,7 +428,7 @@ if errorlevel 1 (
     pause
     goto MENU
 )
-echo ✅ Đã kích hoạt virtual environment
+echo  Đã kích hoạt virtual environment
 echo.
 echo Đang kiểm tra trạng thái hệ thống...
 echo.
@@ -460,7 +460,7 @@ if errorlevel 1 (
     pause
     goto MENU
 )
-echo ✅ Đã tạo virtual environment
+echo  Đã tạo virtual environment
 echo.
 echo Đang cài đặt dependencies...
 call venv311\Scripts\activate.bat
@@ -470,7 +470,7 @@ if errorlevel 1 (
     echo ⚠️  Có một số lỗi khi cài đặt, nhưng có thể tiếp tục
 )
 echo.
-echo ✅ Hoàn tất!
+echo  Hoàn tất!
 pause
 goto MENU
 
@@ -494,7 +494,7 @@ if errorlevel 1 (
     pause
     goto MENU
 )
-echo ✅ Đã kích hoạt virtual environment
+echo  Đã kích hoạt virtual environment
 echo.
 echo 📌 Setup Database (PostgreSQL)
 echo.
@@ -505,14 +505,14 @@ echo 1. Chạy migration script: src\database\migrations\001_initial_schema.sql
 echo 2. Hoặc sử dụng SQLAlchemy để tạo tables tự động
 echo.
 echo Đang kiểm tra SQLAlchemy...
-python -c "from sqlalchemy import create_engine; print('✅ SQLAlchemy OK')" 2>nul
+python -c "from sqlalchemy import create_engine; print(' SQLAlchemy OK')" 2>nul
 if errorlevel 1 (
     echo ⚠️  SQLAlchemy chưa được cài đặt
     echo Đang cài đặt...
     pip install sqlalchemy psycopg2-binary
 )
 echo.
-echo ✅ Database setup script sẵn sàng
+echo  Database setup script sẵn sàng
 echo Xem file: src\database\migrations\001_initial_schema.sql
 echo.
 pause

@@ -72,6 +72,7 @@ def main():
     print()
 
     # 3. Cấu hình MLflow Server (để theo dõi experiments)
+<<<<<<< HEAD
     # 3. Cấu hình MLflow Server (để theo dõi experiments)
     try:
         mlflow.set_tracking_uri(settings.mlflow_tracking_uri)
@@ -79,6 +80,10 @@ def main():
     except Exception as e:
         print(f"⚠️  Không thể kết nối MLflow: {e}")
         print("   -> Tiếp tục huấn luyện mà không có tracking log.")
+=======
+    mlflow.set_tracking_uri(settings.mlflow_tracking_uri)
+    mlflow.set_experiment(settings.mlflow_experiment_name)
+>>>>>>> 8b941ce (Initial release: Traffic Incident Detection System with full documentation)
 
     # 4. Load Training Config (epochs, batch_size, learning_rate...)
     config_path = Path("configs/training_config.yaml")
