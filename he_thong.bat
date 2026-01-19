@@ -13,29 +13,17 @@ echo ========================================
 echo.
 echo Chọn chức năng:
 echo.
-<<<<<<< HEAD
 echo [1]  Giao diện Web (Streamlit) 
-=======
-echo [1] 🖥️  Giao diện Web (Streamlit) - KHUYẾN NGHỊ
->>>>>>> 8b941ce (Initial release: Traffic Incident Detection System with full documentation)
 echo [2]  Chạy API Server
 echo [3]  Huấn luyện mô hình
 echo [4]  Test mô hình
 echo [5]  Kiểm tra trạng thái hệ thống
 echo [6]   Tạo Virtual Environment
-<<<<<<< HEAD
 echo [7]   Setup Database
 echo [8]  Dọn dẹp hệ thống
 echo [9]  Quick Start (Tự động setup và chạy)
 echo [V]   Verify hệ thống (check imports)
 echo [0]  Thoát
-=======
-echo [7] 🗄️  Setup Database
-echo [8] 🧹 Dọn dẹp hệ thống
-echo [9] ⚡ Quick Start (Tự động setup và chạy)
-echo [V] ✔️  Verify hệ thống (check imports)
-echo [0] ❌ Thoát
->>>>>>> 8b941ce (Initial release: Traffic Incident Detection System with full documentation)
 echo.
 set /p choice="Nhập lựa chọn (0-9 hoặc V): "
 
