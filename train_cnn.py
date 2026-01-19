@@ -1,153 +1,211 @@
-import sys
-import io
+import torch
+import torch.nn as nn
+import torch.optim as optim
+from torchvision import datasets, models, transforms
+from torch.utils.data import DataLoader
+import matplotlib.pyplot as plt
+import numpy as np
+import os
+import logging
 from pathlib import Path
+from tqdm import tqdm
+from datetime import datetime
 
-# Đảm bảo hiển thị Tiếng Việt đúng trên Windows Console
-if sys.platform == 'win32':
-    try:
-        sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8')
-        sys.stderr = io.TextIOWrapper(sys.stderr.buffer, encoding='utf-8')
-    except:
-        pass
+# Using relative paths for better portability
+ROOT_DIR = Path(__file__).parent
+DATA_DIR = ROOT_DIR / "data" / "images"
+IMAGE_SIZE = 224
+BATCH_SIZE = 16
+DEVICE = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
-# Thêm thư mục gốc vào PYTHONPATH để import được các module từ src/
-sys.path.insert(0, str(Path(__file__).parent))
+class EarlyStopping:
+    def __init__(self, patience=7, verbose=False, delta=0):
+        self.patience = patience
+        self.verbose = verbose
+        self.counter = 0
+        self.best_score = None
+        self.early_stop = False
+        self.val_loss_min = np.inf
+        self.delta = delta
 
-from src.training.trainer import ModelTrainer
-from src.utils.logger import logger
-from src.utils.config import settings
-import mlflow
+    def __call__(self, val_loss, model, path):
+        score = -val_loss
+        if self.best_score is None:
+            self.best_score = score
+            self.save_checkpoint(val_loss, model, path)
+        elif score < self.best_score + self.delta:
+            self.counter += 1
+            if self.verbose:
+                print(f'EarlyStopping counter: {self.counter} out of {self.patience}')
+            if self.counter >= self.patience:
+                self.early_stop = True
+        else:
+            self.best_score = score
+            self.save_checkpoint(val_loss, model, path)
+            self.counter = 0
 
-def main():
+    def save_checkpoint(self, val_loss, model, path):
+        if self.verbose:
+            print(f'Validation loss decreased ({self.val_loss_min:.6f} --> {val_loss:.6f}). Saving model...')
+        torch.save(model.state_dict(), path)
+        self.val_loss_min = val_loss
 
-    print("=" * 60)
-    print("HUẤN LUYỆN MÔ HÌNH CNN - PHÁT HIỆN SỰ CỐ GIAO THÔNG")
-    print("=" * 60)
-    print()
-
-    # 1. Kiểm tra cấu trúc thư mục dữ liệu
-    # Dữ liệu phải được tổ chức theo cấu trúc:
-    # data/images/
-    # ├── normal/   (Ảnh giao thông bình thường)
-    # └── incident/ (Ảnh tai nạn, cháy xe...)
-    data_path = Path("data/images")
-
-    if not data_path.exists():
-        print(f"❌ Lỗi: Không tìm thấy folder {data_path}")
-        print("Vui lòng đảm bảo có folder data/images/ với 2 subfolder:")
-        print("  - data/images/normal/ (chứa ảnh bình thường)")
-        print("  - data/images/incident/ (chứa ảnh có sự cố)")
-        return
-
-    normal_dir = data_path / "normal"
-    incident_dir = data_path / "incident"
-
-    if not normal_dir.exists():
-        print(f"❌ Lỗi: Không tìm thấy folder {normal_dir}")
-        return
-
-    if not incident_dir.exists():
-        print(f"❌ Lỗi: Không tìm thấy folder {incident_dir}")
-        return
-
-    normal_images = (
-        list(normal_dir.glob("*.jpg")) +
-        list(normal_dir.glob("*.jpeg")) +
-        list(normal_dir.glob("*.png")) +
-        list(normal_dir.glob("*.webp")) +
-        list(normal_dir.glob("*.gif"))
-    )
-    incident_images = (
-        list(incident_dir.glob("*.jpg")) +
-        list(incident_dir.glob("*.jpeg")) +
-        list(incident_dir.glob("*.png")) +
-        list(incident_dir.glob("*.webp")) +
-        list(incident_dir.glob("*.gif"))
-    )
-
-    print(f"📁 Đã tìm thấy:")
-    print(f"   - {len(normal_images)} ảnh bình thường (normal)")
-    print(f"   - {len(incident_images)} ảnh có sự cố (incident)")
-    print(f"   - Tổng cộng: {len(normal_images) + len(incident_images)} ảnh")
-    print()
-
-    # 3. Cấu hình MLflow Server (để theo dõi experiments)
-    mlflow.set_tracking_uri(settings.mlflow_tracking_uri)
-    mlflow.set_experiment(settings.mlflow_experiment_name)
-
-    # 4. Load Training Config (epochs, batch_size, learning_rate...)
-    config_path = Path("configs/training_config.yaml")
-    if not config_path.exists():
-        # Nếu không có file config, dùng default
-        config_path = None
-        print("⚠️  Không tìm thấy config file, sử dụng cấu hình mặc định")
-
-    # 5. Khởi tạo Model Trainer
-    print("🔧 Đang khởi tạo trainer...")
-    trainer = ModelTrainer(model_type='CNN', config_path=config_path)
-    print(" Đã khởi tạo trainer")
-    print()
-
-    # 6. Chuẩn bị dữ liệu (Resize, Normalize, Split Train/Val/Test)
-    # - Test size: 20% (dành riêng để đánh giá cuối cùng)
-    # - Val size: 10% (để check trong quá trình train)
-    print(" Đang chuẩn bị dữ liệu...")
-    print("   (Đang load và xử lý ảnh, có thể mất vài phút...)")
-    try:
-        X_train, y_train, X_val, y_val, X_test, y_test = trainer.prepare_data(
-            data_path=data_path,
-            test_size=0.2,
-            val_size=0.1
+class ModelTrainer:
+    def __init__(self, data_path: Path, run_name: str = "traffic_pro"):
+        self.device = DEVICE
+        self.data_path = data_path
+        timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+        self.run_dir = ROOT_DIR / "models" / f"{run_name}_{timestamp}"
+        self.run_dir.mkdir(parents=True, exist_ok=True)
+        
+        # Setup logging to both file and console
+        log_file = self.run_dir / "train.log"
+        logging.basicConfig(
+            level=logging.INFO, 
+            format='%(asctime)s [%(levelname)s] %(message)s',
+            handlers=[logging.FileHandler(log_file), logging.StreamHandler()]
         )
-        print(" Đã chuẩn bị xong dữ liệu")
-        print(f"   - Training set: {len(X_train)} ảnh")
-        print(f"   - Validation set: {len(X_val)} ảnh")
-        print(f"   - Test set: {len(X_test)} ảnh")
-        print()
-    except Exception as e:
-        print(f"❌ Lỗi khi chuẩn bị dữ liệu: {e}")
-        logger.exception("Lỗi khi chuẩn bị dữ liệu")
-        return
+        self.logger = logging.getLogger(__name__)
+        self.logger.info(f"Results will be saved to: {self.run_dir}")
+        
+        # Load EfficientNet-B0
+        try:
+            from torchvision.models import EfficientNet_B0_Weights
+            self.model = models.efficientnet_b0(weights=EfficientNet_B0_Weights.DEFAULT).to(self.device)
+        except:
+            # Fallback for older torchvision versions
+            self.model = models.efficientnet_b0(pretrained=True).to(self.device)
+            
+        # Replace classifier for binary classification
+        in_ftrs = self.model.classifier[1].in_features
+        self.model.classifier = nn.Sequential(
+            nn.Dropout(0.4),
+            nn.Linear(in_ftrs, 1),
+            nn.Sigmoid()
+        ).to(self.device)
+        
+        self.criterion = nn.BCELoss()
 
-    print(" Bắt đầu huấn luyện mô hình...")
-    print("   (Quá trình này có thể mất nhiều thời gian tùy vào số lượng ảnh và cấu hình)")
-    print()
+    def prepare_data(self):
+        if not self.data_path.exists():
+            self.logger.error(f"Data directory not found: {self.data_path}")
+            return False
 
-    try:
-        training_results = trainer.train(
-            X_train, y_train,
-            X_val, y_val,
-            run_name="CNN_training_from_images"
-        )
+        dataset = datasets.ImageFolder(self.data_path)
+        train_size = int(0.8 * len(dataset))
+        val_size = len(dataset) - train_size
+        train_set, val_set = torch.utils.data.random_split(dataset, [train_size, val_size])
+        
+        # Image transformations
+        transform = transforms.Compose([
+            transforms.Resize((IMAGE_SIZE, IMAGE_SIZE)),
+            transforms.RandomHorizontalFlip(),
+            transforms.ToTensor(),
+            transforms.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225])
+        ])
+        
+        train_set.dataset.transform = transform
+        val_set.dataset.transform = transform
+        self.train_loader = DataLoader(train_set, batch_size=BATCH_SIZE, shuffle=True)
+        self.val_loader = DataLoader(val_set, batch_size=BATCH_SIZE)
+        self.logger.info(f"Loaded {len(train_set)} training and {len(val_set)} validation images.")
+        return True
 
-        print()
-        print(" Đã hoàn thành huấn luyện!")
-        print()
+    def fit(self, stage_name: str, epochs: int, lr: float, freeze: bool = True):
+        self.logger.info(f"STARTING STAGE: {stage_name}")
+        
+        # Freeze or unfreeze backbone layers
+        for name, param in self.model.named_parameters():
+            if "classifier" not in name: 
+                param.requires_grad = not freeze
+            
+        optimizer = optim.Adam(filter(lambda p: p.requires_grad, self.model.parameters()), lr=lr)
+        early_stopping = EarlyStopping(patience=5, verbose=True)
+        best_model_path = self.run_dir / f"best_{stage_name.lower().replace(' ', '_')}.pth"
+        
+        history = {'loss': [], 'val_loss': [], 'acc': [], 'val_acc': []}
 
-        print(" Đang đánh giá mô hình trên test set...")
-        test_metrics = trainer.evaluate_on_test(X_test, y_test)
+        for epoch in range(epochs):
+            # Training phase
+            self.model.train()
+            t_loss, t_correct = 0, 0
+            for imgs, lbls in tqdm(self.train_loader, desc=f"Epoch {epoch+1}", leave=False):
+                imgs, lbls = imgs.to(self.device), lbls.to(self.device).float().view(-1, 1)
+                optimizer.zero_grad()
+                outputs = self.model(imgs)
+                loss = self.criterion(outputs, lbls)
+                loss.backward()
+                optimizer.step()
+                t_loss += loss.item() * imgs.size(0)
+                t_correct += torch.sum((outputs > 0.5).float() == lbls.data)
+            
+            # Validation phase
+            self.model.eval()
+            v_loss, v_correct = 0, 0
+            with torch.no_grad():
+                for imgs, lbls in self.val_loader:
+                    imgs, lbls = imgs.to(self.device), lbls.to(self.device).float().view(-1, 1)
+                    outputs = self.model(imgs)
+                    v_loss += self.criterion(outputs, lbls).item() * imgs.size(0)
+                    v_correct += torch.sum((outputs > 0.5).float() == lbls.data)
+            
+            metrics = {
+                'loss': t_loss / len(self.train_loader.dataset),
+                'acc': (t_correct.double() / len(self.train_loader.dataset)).item(),
+                'val_loss': v_loss / len(self.val_loader.dataset),
+                'val_acc': (v_correct.double() / len(self.val_loader.dataset)).item()
+            }
+            for k in history: 
+                history[k].append(metrics[k])
+                
+            self.logger.info(f"Epoch {epoch+1} | Loss: {metrics['loss']:.4f} Acc: {metrics['acc']:.4f} | Val Loss: {metrics['val_loss']:.4f} Val Acc: {metrics['val_acc']:.4f}")
 
-        print()
-        print("=" * 60)
-        print("KẾT QUẢ HUẤN LUYỆN")
-        print("=" * 60)
-        print()
-        print(" Metrics trên Test Set:")
-        for metric, value in test_metrics.items():
-            print(f"   - {metric}: {value:.4f}")
-        print()
+            # Check for Early Stopping
+            early_stopping(metrics['val_loss'], self.model, best_model_path)
+            if early_stopping.early_stop:
+                self.logger.warning("Early Stopping triggered. Halting training to prevent overfitting.")
+                break
 
-        model_path = training_results.get('model_path')
-        if model_path:
-            print(f"💾 Mô hình đã được lưu tại: {model_path}")
-        print()
+        self._plot_smooth(history, stage_name)
 
-        print(" Hoàn tất!")
+    def _plot_smooth(self, history, title):
+        def smooth(data, w=0.6):
+            res = [data[0]]
+            for p in data[1:]: 
+                res.append(res[-1]*w + p*(1-w))
+            return res
 
-    except Exception as e:
-        print(f"❌ Lỗi khi huấn luyện: {e}")
-        logger.exception("Lỗi khi huấn luyện")
-        return
+        plt.figure(figsize=(12, 4))
+        plt.subplot(1, 2, 1)
+        plt.plot(smooth(history['acc']), label='Train')
+        plt.plot(smooth(history['val_acc']), label='Val')
+        plt.title(f"{title} - Accuracy")
+        plt.legend()
+        
+        plt.subplot(1, 2, 2)
+        plt.plot(smooth(history['loss']), label='Train')
+        plt.plot(smooth(history['val_loss']), label='Val')
+        plt.title(f"{title} - Loss")
+        plt.legend()
+        
+        chart_path = self.run_dir / f"{title.lower().replace(' ', '_')}_chart.png"
+        plt.savefig(chart_path)
+        self.logger.info(f"Chart saved to {chart_path}")
+        plt.close()
+
 
 if __name__ == '__main__':
-    main()
+    print("=" * 60)
+    print("ITS - TRAFFIC INCIDENT DETECTION SYSTEM TRAINING")
+    print("=" * 60)
+    
+    trainer = ModelTrainer(DATA_DIR)
+    if trainer.prepare_data():
+        # Start training process
+        trainer.fit("Transfer_Learning", epochs=20, lr=1e-3, freeze=True)
+        trainer.fit("Fine_Tuning", epochs=50, lr=1e-5, freeze=False)
+        
+        print("\nTraining completed successfully.")
+        print(f"Models and logs are available in: {trainer.run_dir}")
+    else:
+        print("\nTraining failed due to missing data.")
