@@ -1,0 +1,22 @@
+artifact_path: file:///d:/Computer Vision/Computer-Vision Project/Computer-Vision-/mlruns/298582545680552139/models/m-456479dd53a04780bffd9b03ab352da7/artifacts
+flavors:
+  python_function:
+    data: data
+    env:
+      conda: conda.yaml
+      virtualenv: python_env.yaml
+    loader_module: mlflow.tensorflow
+    python_version: 3.11.9
+  tensorflow:
+    code: null
+    data: data
+    keras_version: 2.20.0
+    model_type: keras
+    save_format: tf
+mlflow_version: 3.8.1
+model_id: m-456479dd53a04780bffd9b03ab352da7
+model_size_bytes: 29502351
+model_uuid: m-456479dd53a04780bffd9b03ab352da7
+prompts: null
+run_id: 84625683bf5247f696919648c4147e35
+utc_time_created: '2026-01-19 11:19:48.637213'

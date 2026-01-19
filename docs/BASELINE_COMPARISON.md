@@ -76,7 +76,7 @@ Hệ thống phát hiện sự cố giao thông có thể sử dụng 3 loại d
 | **CNN (Baseline)** | MobileNetV2 + FC layers |  Transfer Learning<br> Tự động feature extraction<br> Nhanh (real-time) | ❌ Cần GPU để train<br>❌ Yêu cầu nhiều dữ liệu ảnh | **Baseline** |
 | **CNN (ResNet50)** | ResNet50 + FC layers |  Độ chính xác cao hơn<br> Transfer Learning | ❌ Chậm hơn MobileNetV2<br>❌ Model lớn hơn | +5-10% F1, -30% speed |
 | **CNN (VGG16)** | VGG16 + FC layers |  Kiến trúc đơn giản<br> Dễ hiểu | ❌ Chậm hơn<br>❌ Model lớn | -3-5% F1, -20% speed |
-| **YOLO/Object Detection** | YOLOv5/v8 |  Phát hiện object + location<br> Real-time | ❌ Phức tạp hơn<br>❌ Cần label bbox | Khác task (object detection) |
+| **YOLO/Object Detection** | YOLOv5/v8 |  Phát hiện object + location<br> Real-time | ❌ Cần data gán nhãn bbox lớn (tốn kém)<br>❌ Khó fine-tune với < 200 ảnh | **Đã thử nghiệm & Dừng** (Chuyển sang Classification do thiếu data) |
 
 **Kết luận**: CNN với MobileNetV2 là baseline phù hợp cho Vision Task vì cân bằng tốt giữa accuracy và speed.
 

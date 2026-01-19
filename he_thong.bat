@@ -13,17 +13,17 @@ echo ========================================
 echo.
 echo Chọn chức năng:
 echo.
-echo [1] 🖥️  Giao diện Web (Streamlit) - KHUYẾN NGHỊ
+echo [1]  Giao diện Web (Streamlit) 
 echo [2]  Chạy API Server
 echo [3]  Huấn luyện mô hình
 echo [4]  Test mô hình
 echo [5]  Kiểm tra trạng thái hệ thống
 echo [6]   Tạo Virtual Environment
-echo [7] 🗄️  Setup Database
-echo [8] 🧹 Dọn dẹp hệ thống
-echo [9] ⚡ Quick Start (Tự động setup và chạy)
-echo [V] ✔️  Verify hệ thống (check imports)
-echo [0] ❌ Thoát
+echo [7]   Setup Database
+echo [8]  Dọn dẹp hệ thống
+echo [9]  Quick Start (Tự động setup và chạy)
+echo [V]   Verify hệ thống (check imports)
+echo [0]  Thoát
 echo.
 set /p choice="Nhập lựa chọn (0-9 hoặc V): "
 
@@ -51,14 +51,14 @@ echo   GIAO DIỆN WEB (STREAMLIT)
 echo ========================================
 echo.
 if not exist "venv311\Scripts\activate.bat" (
-    echo ❌ Lỗi: Không tìm thấy venv311
+    echo  Lỗi: Không tìm thấy venv311
     echo Vui lòng chọn [6] để tạo virtual environment
     pause
     goto MENU
 )
 call venv311\Scripts\activate.bat
 if errorlevel 1 (
-    echo ❌ Lỗi: Không thể kích hoạt venv311
+    echo  Lỗi: Không thể kích hoạt venv311
     pause
     goto MENU
 )
@@ -66,11 +66,11 @@ echo  Đã kích hoạt virtual environment
 echo.
 python -c "import streamlit" 2>nul
 if errorlevel 1 (
-    echo ⚠️  Streamlit chưa được cài đặt
+    echo   Streamlit chưa được cài đặt
     echo Đang cài đặt Streamlit...
     pip install streamlit>=1.28.0
     if errorlevel 1 (
-        echo ❌ Lỗi: Không thể cài đặt Streamlit
+        echo  Lỗi: Không thể cài đặt Streamlit
         pause
         goto MENU
     )
@@ -79,8 +79,8 @@ if errorlevel 1 (
 )
 echo  Đang khởi động giao diện web...
 echo.
-echo 📌 Giao diện sẽ mở tại: http://localhost:8501
-echo 📌 Nhấn Ctrl+C để dừng server
+echo  Giao diện sẽ mở tại: http://localhost:8501
+echo  Nhấn Ctrl+C để dừng server
 echo.
 if not exist ".streamlit" mkdir .streamlit
 set STREAMLIT_BROWSER_GATHER_USAGE_STATS=false
@@ -98,14 +98,14 @@ echo   CHẠY API SERVER
 echo ========================================
 echo.
 if not exist "venv311\Scripts\activate.bat" (
-    echo ❌ Lỗi: Không tìm thấy venv311
+    echo  Lỗi: Không tìm thấy venv311
     echo Vui lòng chọn [6] để tạo virtual environment
     pause
     goto MENU
 )
 call venv311\Scripts\activate.bat
 if errorlevel 1 (
-    echo ❌ Lỗi: Không thể kích hoạt venv311
+    echo  Lỗi: Không thể kích hoạt venv311
     pause
     goto MENU
 )
@@ -154,26 +154,26 @@ echo   TRAIN CNN MODEL (VỚI ẢNH)
 echo ========================================
 echo.
 if not exist "venv311\Scripts\activate.bat" (
-    echo ❌ Lỗi: Không tìm thấy venv311
+    echo  Lỗi: Không tìm thấy venv311
     pause
     goto TRAIN_MENU
 )
 call venv311\Scripts\activate.bat
 if errorlevel 1 (
-    echo ❌ Lỗi: Không thể kích hoạt venv311
+    echo  Lỗi: Không thể kích hoạt venv311
     pause
     goto TRAIN_MENU
 )
 echo  Đã kích hoạt virtual environment
 echo.
 if not exist "data\images\normal" (
-    echo ❌ Lỗi: Không tìm thấy folder data\images\normal
+    echo  Lỗi: Không tìm thấy folder data\images\normal
     echo Vui lòng đảm bảo có folder data\images\normal chứa ảnh bình thường
     pause
     goto TRAIN_MENU
 )
 if not exist "data\images\incident" (
-    echo ❌ Lỗi: Không tìm thấy folder data\images\incident
+    echo  Lỗi: Không tìm thấy folder data\images\incident
     echo Vui lòng đảm bảo có folder data\images\incident chứa ảnh có sự cố
     pause
     goto TRAIN_MENU
@@ -195,13 +195,13 @@ echo   TRAIN ANN MODEL
 echo ========================================
 echo.
 if not exist "venv311\Scripts\activate.bat" (
-    echo ❌ Lỗi: Không tìm thấy venv311
+    echo  Lỗi: Không tìm thấy venv311
     pause
     goto TRAIN_MENU
 )
 call venv311\Scripts\activate.bat
 if errorlevel 1 (
-    echo ❌ Lỗi: Không thể kích hoạt venv311
+    echo  Lỗi: Không thể kích hoạt venv311
     pause
     goto TRAIN_MENU
 )

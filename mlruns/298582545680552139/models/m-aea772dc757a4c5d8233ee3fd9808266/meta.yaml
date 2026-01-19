@@ -1,0 +1,10 @@
+artifact_location: file:///d:/Computer Vision/Computer-Vision Project/Computer-Vision-/mlruns/298582545680552139/models/m-aea772dc757a4c5d8233ee3fd9808266/artifacts
+creation_timestamp: 1768807290072
+experiment_id: '298582545680552139'
+last_updated_timestamp: 1768807302121
+model_id: m-aea772dc757a4c5d8233ee3fd9808266
+model_type: null
+name: model
+source_run_id: 9a742131d71048e18882a150cda54d73
+status: 2
+status_message: null

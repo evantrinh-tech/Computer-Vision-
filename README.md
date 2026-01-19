@@ -1,3 +1,7 @@
+<<<<<<< HEAD
+# ITS
+HỆ THỐNG PHÁT HIỆN SỰ CỐ GIAO THÔNG
+=======
 #  Hệ thống Phát hiện Sự cố Giao thông Tự động
 
 Hệ thống tự động phát hiện sự cố giao thông (tai nạn, xe hỏng, sự kiện đặc biệt) từ ảnh camera sử dụng Deep Learning và Neural Network. Hệ thống được xây dựng với kiến trúc end-to-end từ xử lý ảnh/video đến dashboard quản lý và API tích hợp.
@@ -775,3 +779,4 @@ Nhóm phát triển:
 ---
 
 *Cập nhật lần cuối: 2024*
+>>>>>>> 8b941ce (Initial release: Traffic Incident Detection System with full documentation)
