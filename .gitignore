@@ -21,3 +21,8 @@ rad.json
 #Test results file
 TestResults.xml
 venv311/
+
+**/__pycache__/
+*.py[cod]
+*$py.class
+./mlruns/
