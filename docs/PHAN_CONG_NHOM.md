@@ -2,24 +2,26 @@
 ## ĐỀ TÀI: CHƯƠNG TRÌNH PHÁT HIỆN & PHÂN ĐOẠN HÀNH VI BẤT THƯỜNG (ITS)
 
 ### 1. CẤU TRÚC THÀNH VIÊN
-*   **Tổng số:** 4 thành viên.
-*   **Thành phần:** 2 Sinh viên CNTT (IT) + 2 Sinh viên Khoa học dữ liệu (DS).
+*   **Tổng số:** 5 thành viên.
+*   **Thành phần:** 2 Sinh viên CNTT (IT) + 3 Sinh viên Khoa học dữ liệu (DS).
+*   **Nhóm trưởng:** Xuân Đạt (IT).
 
 ### 2. PHÂN CHIA VAI TRÒ CHUNG
 *   **Nhóm CNTT (2 bạn):** Chịu trách nhiệm toàn bộ về **Hệ thống (System), Tích hợp (Integration), Giao diện (Frontend) & Triển khai (Deployment)**. Đảm bảo sản phẩm chạy Live mượt mà.
-*   **Nhóm KHDL (2 bạn):** Chịu trách nhiệm trọn gói về **Dữ liệu & Mô hình AI (Data & Model)** cho 2 bài toán cốt lõi: Phát hiện (Detection) và Phân đoạn (Segmentation).
+*   **Nhóm KHDL (3 bạn):** Chịu trách nhiệm trọn gói về **Dữ liệu & Mô hình AI (Data & Model)** cho 2 bài toán cốt lõi: Phát hiện (Detection) và Phân đoạn (Segmentation).
 
 ---
 
 ### 3. CHI TIẾT CÔNG VIỆC (TASK LIST)
 
-#### 👤 THÀNH VIÊN 1 (CNTT 1 - Team Leader/System Architect)
-*   **Vai trò:** Kiến trúc hệ thống & Backend/Core Logic.
+#### 👤 THÀNH VIÊN 1 - XUÂN ĐẠT (CNTT 1 - Team Leader/System Architect)
+*   **Vai trò:** Nhóm trưởng - Kiến trúc hệ thống & Backend/Core Logic.
 *   **Nhiệm vụ chuyên môn:**
     *   Thiết kế kiến trúc Microservices/Modular.
     *   Xây dựng Pipeline xử lý video (Video Streaming Pipeline).
     *   Tối ưu hóa đa luồng (Multi-threading) để đảm bảo FPS cao.
     *   Tích hợp các Model AI vào hệ thống (Model Serving).
+    *   Điều phối và giám sát tiến độ chung của nhóm.
 *   **Nội dung Slide & Thuyết trình:**
     *   Sơ đồ khối kiến trúc hệ thống (System Architecture).
     *   Giải pháp kỹ thuật xử lý luồng (Tech Stack).
@@ -48,19 +50,30 @@
     *   Kiến trúc & huấn luyện mô hình Detection.
     *   Kết quả đánh giá & Phân tích sai số (Detection Evaluation).
 
-#### 👤 THÀNH VIÊN 4 (DS 2 - Segmentation Lead & Slide Master)
-*   **Vai trò:** Phụ trách bài toán Phân đoạn (Segmentation) & Tổng hợp Slide.
+#### 👤 THÀNH VIÊN 4 (DS 2 - Segmentation Lead)
+*   **Vai trò:** Phụ trách bài toán Phân đoạn (Segmentation).
 *   **Nhiệm vụ chuyên môn:**
     *   Xử lý dữ liệu cho bài toán Segmentation (Pixel-level labeling/cleaning).
     *   Huấn luyện & tinh chỉnh mô hình Segmentation (U-Net, DeepLab...).
     *   Đánh giá mô hình Segmentation (IoU, Dice Coefficient).
-*   **Nhiệm vụ Slide Master:**
-    *   Gom nội dung từ 3 thành viên còn lại.
-    *   Thiết kế Template, format font chữ, màu sắc đồng bộ.
-    *   Viết phần: Giới thiệu chung, So sánh hiệu năng tổng thể, Kết luận & Hướng phát triển.
 *   **Nội dung Slide & Thuyết trình:**
     *   Chi tiết kỹ thuật Segmentation (U-Net...).
     *   Kết quả phân đoạn & Trực quan hóa (Masks visualization).
+
+#### 👤 THÀNH VIÊN 5 (DS 3 - Model Comparison & Slide Master)
+*   **Vai trò:** So sánh mô hình & Tổng hợp Slide.
+*   **Nhiệm vụ chuyên môn:**
+    *   So sánh hiệu năng giữa các mô hình Detection và Segmentation.
+    *   Phân tích điểm mạnh, điểm yếu của từng mô hình.
+    *   Đề xuất cải tiến và hướng phát triển.
+*   **Nhiệm vụ Slide Master:**
+    *   Gom nội dung từ 4 thành viên còn lại.
+    *   Thiết kế Template, format font chữ, màu sắc đồng bộ.
+    *   Viết phần: Giới thiệu chung, So sánh hiệu năng tổng thể, Kết luận & Hướng phát triển.
+*   **Nội dung Slide & Thuyết trình:**
+    *   Bảng so sánh hiệu năng các mô hình (Baseline Comparison).
+    *   Phân tích kết quả tổng thể.
+    *   Kết luận và hướng phát triển.
 
 ---
 
