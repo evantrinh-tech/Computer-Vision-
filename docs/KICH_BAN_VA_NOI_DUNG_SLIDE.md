@@ -1,7 +1,7 @@
 # 🎬 KỊCH BẢN THUYẾT TRÌNH & NỘI DUNG SLIDE CHI TIẾT
 **Dự án:** ITS - Phát hiện sự cố giao thông (Detecting & Segmenting Abnormal Behavior)
 **Thời lượng:** 20-25 phút
-**Nhóm:** 6 thành viên (5 Data Science (DS), 1 IT Leader)
+**Nhóm:** 5 thành viên (2 CNTT, 3 Khoa học Dữ liệu) - **Nhóm trưởng: Xuân Đạt (IT)**
 
 ---
 
@@ -9,18 +9,17 @@
 
 | STT | Người trình bày | Vai trò | Nội dung chính |
 |:---:|:--- |:--- |:--- |
-| **1** | **Thành viên DS 1** | Mở đầu | Lý do chọn đề tài, Mục tiêu, Tổng quan Dữ liệu. |
-| **2** | **Thành viên DS 2** | Xử lý dữ liệu | Tiền xử lý (Resize/Norm), Data Augmentation. |
-| **3** | **Thành viên DS 3** | Modeling | CNN, Transfer Learning, MobileNetV2 Architecture. |
-| **4** | **Thành viên DS 4** | Training | Quá trình huấn luyện, Hyperparameters, Loss/Acc charts. |
-| **5** | **Thành viên DS 5** | Evaluation | Metrics (F1/Recall), Confusion Matrix, **Temporal Algorithm**. |
-| **6** | **Trưởng nhóm (IT)** | System & Demo | Kiến trúc hệ thống, Tech stack, **Live Demo**, Q&A. |
+| **1** | **Xuân Đạt (IT - Nhóm trưởng)** | Mở đầu & Kết luận | Giới thiệu, Đặt vấn đề, Kiến trúc hệ thống tổng thể, Tech Stack, **Live Demo**, Kết luận. |
+| **2** | **Thành viên IT** | Backend & API | Kiến trúc Backend (FastAPI), API Endpoints, Tích hợp AI Model, Xử lý đa luồng. |
+| **3** | **Thành viên DS 1** | Dữ liệu & Tiền xử lý | Dataset, Preprocessing, Data Augmentation. |
+| **4** | **Thành viên DS 2** | Modeling & Training | MobileNetV2, Transfer Learning, Quá trình huấn luyện. |
+| **5** | **Thành viên DS 3** | Evaluation & Temporal | Metrics, **Temporal Confirmation Algorithm**, Baseline Comparison. |
 
 ---
 
 ## 📝 CHI TIẾT TỪNG PHẦN (Slide & Lời thoại)
 
-### **PHẦN 1: MỞ ĐẦU & DỮ LIỆU (Thành viên DS 1)**
+### **PHẦN 1: MỞ ĐẦU & KIẾN TRÚC HỆ THỐNG (Xuân Đạt - IT Leader)**
 
 #### **Slide 1: Trang bìa**
 *   **Hình ảnh:** Tên đề tài to rõ, Logo trường, Tên GVHD, Danh sách nhóm.
@@ -33,115 +32,129 @@
     *   Tai nạn/Sự cố thường bị bỏ qua nếu không có người trực 24/7.
     *   **Mục tiêu:** Xây dựng AI tự động phát hiện sự cố (tai nạn, xe hỏng) để cảnh báo kịp thời.
 *   **Lời thoại:**
-    > "Trong thời đại smart city, camera có ở khắp nơi. Tuy nhiên, việc giám sát thủ công 24/7 là bất khả thi. Mục tiêu của nhóm là xây dựng một 'đôi mắt ảo' giúp tự động phát hiện tai nạn hoặc sự cố ngay khi nó xảy ra."
+    > "Trong thời đại smart city, camera có ở khắp nơi. Tuy nhiên, việc giám sát thủ công 24/7 là bất khả thi. Mục tiêu của nhóm em là xây dựng một 'đôi mắt ảo' giúp tự động phát hiện tai nạn hoặc sự cố ngay khi nó xảy ra, giúp lực lượng chức năng ứng phó kịp thời."
 
-#### **Slide 3: Tổng quan Dữ liệu (Dataset)**
+#### **Slide 3: Kiến trúc Hệ thống (System Overview)**
+*   **Hình ảnh:** Sơ đồ khối:
+    *   [Camera/Video] -> [API Server (FastAPI)] -> [AI Engine (MobileNetV2 + Temporal)] -> [Database (PostgreSQL)] -> [Dashboard (Streamlit)].
+*   **Nội dung:**
+    *   **Backend:** FastAPI xử lý bất đồng bộ, tối ưu đa luồng.
+    *   **AI Engine:** MobileNetV2 + Temporal Confirmation Algorithm.
+    *   **Frontend:** Dashboard Streamlit hiển thị real-time.
+*   **Lời thoại:**
+    > "Em đã xây dựng hệ thống theo kiến trúc 3 lớp. Backend sử dụng FastAPI đảm bảo tốc độ cao với đa luồng. AI Engine được tích hợp trực tiếp vào pipeline xử lý video. Kết quả nhận diện được lưu Database và hiển thị tức thì lên Dashboard."
+
+#### **Slide 4: Công nghệ sử dụng (Tech Stack)**
+*   **Hình ảnh:** Logo các công nghệ: Python, TensorFlow, FastAPI, Streamlit, PostgreSQL, OpenCV.
+*   **Lời thoại:**
+    > "Đây là bộ công nghệ nhóm em sử dụng. FastAPI cho hiệu năng cao, Streamlit giúp dễ dàng giám sát, TensorFlow cho AI, và PostgreSQL lưu trữ dữ liệu cảnh báo."
+
+---
+
+### **PHẦN 2: BACKEND & API (Thành viên IT - Backend Lead)**
+
+#### **Slide 5: Kiến trúc Backend với FastAPI**
+*   **Hình ảnh:** Sơ đồ luồng xử lý Backend: Request → Validation → Preprocessing → Model Inference → Response.
+*   **Nội dung:**
+    *   **FastAPI:** Framework hiện đại, xử lý bất đồng bộ (Async).
+    *   **API Endpoints:** `/predict`, `/predict/batch`, `/health`.
+    *   **Performance:** Hỗ trợ đa luồng, caching để tối ưu tốc độ.
+    *   **Integration:** Tích hợp trực tiếp AI Model vào pipeline.
+*   **Lời thoại:**
+    > "Em phụ trách phần Backend và API. Hệ thống sử dụng FastAPI cho khả năng xử lý bất đồng bộ cao. API được thiết kế với các endpoints chuẩn RESTful, có validation đầu vào và error handling đầy đủ. Mỗi request được xử lý qua pipeline: validation → preprocessing → model inference → trả về kết quả."
+
+#### **Slide 6: Tích hợp AI Model & Tối ưu hóa**
+*   **Hình ảnh:** Code snippet hoặc sơ đồ minh họa cách tích hợp model vào API.
+*   **Nội dung:**
+    *   **Model Loading:** Load một lần khi khởi động server.
+    *   **Batch Processing:** Xử lý nhiều frame cùng lúc để tăng throughput.
+    *   **Caching:** Cache kết quả để giảm latency.
+    *   **Async Processing:** Xử lý đồng thời nhiều request.
+*   **Lời thoại:**
+    > "Để tối ưu hiệu năng, em áp dụng các kỹ thuật như: load model một lần khi khởi động, batch processing để xử lý nhiều frame cùng lúc, và async processing để server có thể phục vụ nhiều client đồng thời. Điều này giúp hệ thống đạt tốc độ xử lý cao hơn."
+
+---
+
+### **PHẦN 3: DỮ LIỆU & TIỀN XỬ LÝ (Thành viên DS 1 - Data Lead)**
+
+#### **Slide 7: Tổng quan Dữ liệu (Dataset Overview)**
 *   **Hình ảnh:** Biểu đồ tròn phân bố (Normal vs Incident). Một vài ảnh mẫu (Sample images) của từng loại.
 *   **Nội dung:**
     *   Nguồn: Thu thập từ Youtube, Dataset công khai (AI City Challenge...).
     *   Class 1: **Normal** (Giao thông bình thường).
     *   Class 2: **Incident** (Tai nạn, cháy, va chạm).
-    *   Khó khăn: Ảnh mờ, góc quay đa dạng.
+    *   Khó khăn: Ảnh mờ, góc quay đa dạng, số lượng ảnh sự cố ít.
 *   **Lời thoại:**
-    > "Để dạy cho máy biết thế nào là sự cố, chúng em đã thu thập và gán nhãn dữ liệu thành 2 loại: Bình thường và Sự cố. Dữ liệu bao gồm nhiều bối cảnh khác nhau từ cao tốc đến ngã tư."
+    > "Em phụ trách phần dữ liệu. Dataset được thu thập và gán nhãn thành 2 loại: Bình thường và Sự cố. Dữ liệu bao gồm nhiều bối cảnh từ cao tốc đến ngã tư. Thách thức lớn nhất là ảnh sự cố rất hiếm so với ảnh bình thường."
+
+#### **Slide 8: Tiền xử lý & Tăng cường Dữ liệu**
+*   **Hình ảnh:** Sơ đồ pipeline: Ảnh gốc -> Resize (224x224) -> Normalize -> Augmentation (xoay, lật, brightness).
+*   **Nội dung:**
+    *   **Preprocessing:** Resize về 224x224, Normalize pixel values.
+    *   **Data Augmentation:** Rotation, Flip, Brightness để cân bằng dataset.
+    *   Kết quả: Tăng dataset gấp 3-5 lần, giảm overfitting.
+*   **Lời thoại:**
+    > "Để giải quyết vấn đề thiếu dữ liệu sự cố, em áp dụng Data Augmentation. Từ một ảnh tai nạn, tạo ra nhiều phiên bản: xoay, lật, chỉnh độ sáng. Điều này giúp mô hình học được bản chất vấn đề, nhận diện tốt cả khi điều kiện ánh sáng thay đổi."
 
 ---
 
-### **PHẦN 2: XỬ LÝ DỮ LIỆU (Thành viên DS 2)**
+### **PHẦN 4: MÔ HÌNH HÓA & HUẤN LUYỆN (Thành viên DS 2 - Model Lead)**
 
-#### **Slide 4: Tiền xử lý (Preprocessing)**
-*   **Hình ảnh:** Sơ đồ: Ảnh gốc -> Resize (224x224) -> Normalize (0-1).
+#### **Slide 9: Kiến trúc MobileNetV2 & Transfer Learning**
+*   **Hình ảnh:** Sơ đồ kiến trúc [Input -> MobileNetV2 (Pre-trained) -> GlobalAvgPool -> Dense -> Dropout -> Output (2 classes)].
 *   **Nội dung:**
-    *   Resize: Đưa về chuẩn đầu vào của MobileNetV2 (224x224).
-    *   Normalization: Chia giá trị pixel cho 255 để đưa về khoảng [0, 1].
+    *   **Transfer Learning:** Tận dụng MobileNetV2 đã train trên ImageNet.
+    *   **Base Model:** MobileNetV2 (nhẹ 14MB, nhanh, phù hợp real-time).
+    *   **Custom Head:** Dense layers để phân loại Normal/Incident.
+    *   **So sánh:** MobileNetV2 vs ResNet50 vs VGG16 (tốc độ, kích thước).
 *   **Lời thoại:**
-    > "Ảnh từ camera có kích thước lộn xôn. Bước đầu tiên là chuẩn hóa chúng về kích thước 224x224 để phù hợp với mô hình, đồng thời chuẩn hóa giá trị pixel để mô hình hội tụ nhanh hơn."
+    > "Em phụ trách mô hình AI. Nhóm chọn MobileNetV2 làm backbone vì nó cực kỳ nhẹ và nhanh, phù hợp cho real-time. Thay vì train từ đầu, em áp dụng Transfer Learning - tận dụng kiến thức từ ImageNet và fine-tune cho bài toán phát hiện sự cố."
 
-#### **Slide 5: Data Augmentation (Tăng cường dữ liệu)**
-*   **Hình ảnh:** 1 ảnh gốc ở giữa -> Mũi tên ra 4 ảnh biến thể (Xoay nghiêng, lật ngang, tối hơn, zoom).
+#### **Slide 10: Quá trình Huấn luyện (Training Process)**
+*   **Hình ảnh:** 2 biểu đồ đường (Loss & Accuracy) qua các epochs.
 *   **Nội dung:**
-    *   Kỹ thuật: Rotation, Horizontal Flip, Brightness adjust.
-    *   Mục đích: Giảm Overfitting, giúp model học tốt trong điều kiện nắng/mưa.
-*   **Lời thoại:**
-    > "Vì dữ liệu sự cố rất hiếm, nhóm dùng kỹ thuật Data Augmentation. Từ một ảnh tai nạn, chúng em tạo ra nhiều phiên bản: xoay, lật, chỉnh độ sáng... Điều này giúp AI không 'học vẹt' mà hiểu bản chất vấn đề, nhận diện tốt cả khi trời tối hay camera bị rung."
-
----
-
-### **PHẦN 3: MÔ HÌNH HÓA (Thành viên DS 3)**
-
-#### **Slide 6: Tại sao chọn CNN & Transfer Learning?**
-*   **Hình ảnh:** Sơ đồ ý tưởng Transfer Learning (ImageNet Knowledge -> ITS Task).
-*   **Nội dung:**
-    *   CNN: Chuyên trị xử lý ảnh (Feature Extraction).
-    *   Transfer Learning: Tận dụng model đã train sẵn (Pre-trained) để tiết kiệm thời gian và tăng độ chính xác.
-*   **Lời thoại:**
-    > "Thay vì xây dựng mô hình từ con số 0 cần hàng triệu ảnh, nhóm áp dụng Transfer Learning. Chúng em sử dụng 'trí tuệ' của các mô hình lớn đã học hàng triệu vật thể, sau đó tinh chỉnh lại để chuyên phát hiện sự cố giao thông."
-
-#### **Slide 7: Kiến trúc MobileNetV2 (Architecture)**
-*   **Hình ảnh:** Sơ đồ kiến trúc [Input -> MobileNetV2 (Frozen) -> GlobalAvgPool -> Dense -> Dropout -> Output].
-*   **Nội dung:**
-    *   **Base Model:** MobileNetV2 (nhẹ, nhanh, phù hợp realtime). So sánh: MobileNetV2 (14MB) vs VGG16 (500MB+).
-    *   **Custom Head:** Thêm các lớp Dense để phân loại 2 class.
-*   **Lời thoại:**
-    > "Nhóm quyết định chọn MobileNetV2 làm xương sống (Backbone). Lý do là nó cực kỳ nhẹ và nhanh, rất phù hợp cho bài toán giám sát thời gian thực (Real-time). Chúng em giữ lại phần trích xuất đặc trưng và chỉ thay thế phần đuôi để phân loại: Có sự cố hay Không."
-
----
-
-### **PHẦN 4: HUẤN LUYỆN (Thành viên DS 4)**
-
-#### **Slide 8: Cấu hình Huấn luyện (Training Config)**
-*   **Nội dung (Bảng):**
-    *   Framework: TensorFlow/Keras.
-    *   Optimizer: Adam (Learning rate = 0.001).
+    *   Framework: TensorFlow/Keras, Optimizer: Adam (lr=0.001).
     *   Loss Function: Binary Crossentropy.
-    *   Epochs: 20-50.
-    *   Hardware: Google Colab GPU / Local GPU.
+    *   Kết quả: Accuracy ~95%, Loss giảm đều qua epochs.
+    *   Hardware: GPU (Google Colab/Local).
 *   **Lời thoại:**
-    > "Chúng em huấn luyện mô hình sử dụng TensorFlow. Hàm tối ưu Adam được chọn vì sự ổn định. Quá trình train được thực hiện trên GPU để tăng tốc độ xử lý."
-
-#### **Slide 9: Biểu đồ Loss & Accuracy**
-*   **Hình ảnh:** 2 biểu đồ đường (Line chart).
-    *   Trục X: Epochs.
-    *   Trục Y: Loss/Accuracy.
-    *   Đường Train và Validation đi sát nhau (Good fit).
-*   **Lời thoại:**
-    > "Đây là kết quả huấn luyện. Đường màu xanh là Train, màu cam là Validation. Thầy cô có thể thấy Loss giảm đều và Accuracy tăng dần lên mức 9x%, chứng tỏ mô hình học tốt và không bị Overfitting quá mức."
+    > "Đây là kết quả huấn luyện. Đường xanh là Train, cam là Validation. Loss giảm đều và Accuracy đạt ~95%, chứng tỏ mô hình học tốt và không bị overfitting. Việc sử dụng GPU giúp giảm thời gian train xuống còn vài giờ."
 
 ---
 
-### **PHẦN 5: ĐÁNH GIÁ & THUẬT TOÁN (Thành viên DS 5)**
+### **PHẦN 5: ĐÁNH GIÁ, THUẬT TOÁN & SO SÁNH (Thành viên DS 3 - Evaluation Lead)**
 
-#### **Slide 10: Kết quả Đánh giá (Metrics)**
-*   **Hình ảnh:** Confusion Matrix (Ma trận nhầm lẫn).
+#### **Slide 11: Kết quả Đánh giá (Evaluation Metrics)**
+*   **Hình ảnh:** Confusion Matrix + Bảng metrics (Precision, Recall, F1-Score).
 *   **Nội dung:**
-    *   Accuracy: ~95% (Ví dụ).
-    *   **Precision/Recall:** Nhấn mạnh tầm quan trọng của Recall (Không được bỏ sót tai nạn).
+    *   Accuracy: ~95%.
+    *   **Recall cao (>90%):** Không bỏ sót tai nạn thật.
+    *   Precision: Cân bằng với recall để giảm false alarms.
 *   **Lời thoại:**
-    > "Độ chính xác tổng thể đạt X%. Tuy nhiên, trong bài toán an toàn này, nhóm ưu tiên chỉ số Recall - tức là 'thà báo nhầm còn hơn bỏ sót'. Nhìn vào Confusion Matrix, số lượng tai nạn bị bỏ sót (False Negative) là rất thấp."
+    > "Em phụ trách đánh giá mô hình. Độ chính xác đạt ~95%. Trong bài toán an toàn, nhóm ưu tiên Recall cao - 'thà báo nhầm còn hơn bỏ sót'. Confusion Matrix cho thấy số tai nạn bị bỏ sót (False Negative) rất thấp."
 
-#### **Slide 11: Thuật toán Xác nhận theo thời gian (Temporal Confirmation) [HIGHLIGHT]**
-*   **Hình ảnh:** Minh họa Timeline. Frame 1 (Báo) -> Frame 2 (Báo) ... -> Frame K (Báo) => **ALARM ON**.
+#### **Slide 12: Thuật toán Xác nhận Thời gian (Temporal Confirmation) [HIGHLIGHT]**
+*   **Hình ảnh:** Timeline minh họa Sliding Window: Frame 1-5 đều báo "Incident" => **CẢNH BÁO**.
 *   **Nội dung:**
-    *   Vấn đề: Nhiễu, nháy (Flickering) trong 1 frame đơn lẻ.
-    *   Giải pháp: Sliding Window K=5 frames.
-    *   Kết quả: Giảm báo động giả (False Alarms).
+    *   **Vấn đề:** Nhiễu 1 frame gây false alarm (lá bay, đèn loé).
+    *   **Giải pháp:** Sliding Window K=5 frames - chỉ báo khi 5 frame liên tiếp đều phát hiện sự cố.
+    *   **Kết quả:** Giảm false alarms từ 30% xuống <5%.
 *   **Lời thoại:**
-    > "Một cải tiến quan trọng của nhóm là thuật toán 'Xác nhận theo thời gian'. AI thường bị 'giật mình' bởi lá cây bay hay ánh đèn loé. Thuật toán này yêu cầu sự cố phải tồn tại liên tục trong ít nhất 5 khung hình thì hệ thống mới phát cảnh báo. Điều này giúp hệ thống hoạt động ổn định hơn rất nhiều."
+    > "Cải tiến quan trọng là thuật toán Temporal Confirmation. AI có thể nhầm lẫn bởi nhiễu ngắn hạn. Thuật toán này yêu cầu sự cố phải xuất hiện liên tục trong 5 khung hình mới báo động, giúp hệ thống ổn định hơn rất nhiều."
+
+#### **Slide 13: So sánh Baseline (Baseline Comparison)**
+*   **Hình ảnh:** Bảng so sánh MobileNetV2 vs ResNet50 vs VGG16 (Accuracy, Speed, Size).
+*   **Nội dung:**
+    *   MobileNetV2: 95% accuracy, 14MB, 30 FPS.
+    *   ResNet50: 96% accuracy, 98MB, 15 FPS.
+    *   VGG16: 94% accuracy, 528MB, 8 FPS.
+    *   **Kết luận:** MobileNetV2 cân bằng tốt nhất cho real-time.
+*   **Lời thoại:**
+    > "Nhóm đã thử nghiệm 3 mô hình. MobileNetV2 tuy accuracy thấp hơn ResNet50 một chút nhưng nhanh gấp đôi và nhẹ hơn 7 lần. Đây là lựa chọn tối ưu cho hệ thống giám sát real-time."
 
 ---
 
-### **PHẦN 6: HỆ THỐNG & DEMO (Trưởng nhóm IT)**
-
-#### **Slide 12: Kiến trúc Hệ thống (System Overview)**
-*   **Hình ảnh:** Sơ đồ khối:
-    *   [Camera/Video File] ---> [API Server (FastAPI)] ---> [AI Engine (MobileNetV2 + Temporal Algo)] ---> [Database (PostgreSQL)] ---> [Dashboard (Streamlit)].
-*   **Lời thoại:**
-    > "Để đưa mô hình vào thực tế, em đã xây dựng một kiến trúc 3 lớp. Backend sử dụng FastAPI xử lý bất đồng bộ để đảm bảo tốc độ. Mô hình AI được nhúng trực tiếp vào luồng xử lý video. Kết quả nhận diện được lưu vào Database và hiển thị tức thì lên Dashboard."
-
-#### **Slide 13: Công nghệ sử dụng (Tech Stack)**
-*   **Hình ảnh:** Logo các công nghệ: Python, TensorFlow, FastAPI, Streamlit, MLflow, OpenCV.
-*   **Lời thoại:**
-    > "Đây là bộ công nghệ (Stack) nhóm sử dụng. FastAPI cho hiệu năng cao, Streamlit giúp người vận hành dễ dàng theo dõi, và MLflow để quản lý các phiên bản mô hình."
+### **PHẦN 6: LIVE DEMO & KẾT LUẬN (Xuân Đạt - Nhóm trưởng)**
 
 #### **Slide 14: LIVE DEMO [QUAN TRỌNG NHẤT]**
 *   *(Chuyển màn hình sang ứng dụng đang chạy)*
@@ -151,22 +164,36 @@
     3.  Upload 1 video tai nạn giao thông (đã chuẩn bị sẵn).
     4.  Chỉ vào màn hình khi hệ thống hiện dòng chữ đỏ **"CẢNH BÁO: SỰ CỐ"**.
     5.  Show phần log/lịch sử bên dưới.
+    6.  Giải thích flow: Video → API → AI Model → Temporal Confirmation → Alert.
 *   **Lời thoại:**
-    > "Sau đây em xin demo trực tiếp. Em sẽ nạp vào hệ thống một video giám sát... Như thầy cô thấy, ngay khi xe va chạm, hệ thống lập tức khoanh vùng và bật cảnh báo đỏ. Độ trễ xử lý chỉ khoảng vài mili-giây."
+    > "Sau đây em xin demo trực tiếp hệ thống hoàn chỉnh. Em sẽ nạp vào một video giám sát giao thông... Như thầy cô thấy, ngay khi xe va chạm, hệ thống lập tức phát hiện và sau khi xác nhận qua thuật toán Temporal Confirmation, nó bật cảnh báo đỏ. Toàn bộ quá trình từ upload video đến hiển thị cảnh báo chỉ mất vài giây. Tất cả thông tin được lưu vào database để tra cứu sau này."
 
-#### **Slide 15: Hướng phát triển & Kết luận**
+#### **Slide 15: Kết luận & Đóng góp chính**
 *   **Nội dung:**
-    *   Sử dụng YOLO/Mask R-CNN để khoanh vùng (segmentation) chính xác hơn (Future work).
-    *   Triển khai Edge Device (Jetson Nano).
-    *   Tích hợp gửi tin nhắn Telegram/Zalo cho CSGT.
+    *   Xây dựng thành công hệ thống ITS real-time với MobileNetV2.
+    *   Đóng góp chính:
+        *   Temporal Confirmation Algorithm giảm false alarms.
+        *   Kiến trúc hệ thống Microservices linh hoạt, dễ mở rộng.
+        *   Dashboard trực quan, dễ sử dụng.
+    *   Kết quả: Accuracy 95%, FPS 30, minimal false alarms.
 *   **Lời thoại:**
-    > "Trong tương lai, nhóm dự định nâng cấp lên Segmentation để tô màu chính xác vùng tai nạn và tích hợp gửi tin nhắn cảnh báo tự động cho lực lượng chức năng. Em xin cảm ơn thầy cô đã lắng nghe!"
+    > "Tóm lại, nhóm em đã xây dựng thành công hệ thống phát hiện sự cố giao thông real-time. Điểm nổi bật là thuật toán Temporal Confirmation và kiến trúc Microservices linh hoạt. Hệ thống đạt 95% accuracy với tốc độ xử lý 30 FPS."
+
+#### **Slide 16: Hướng phát triển & Kết thúc**
+*   **Nội dung:**
+    *   **Future Work:**
+        *   Nâng cấp lên Segmentation (U-Net) để khoanh vùng chính xác.
+        *   Triển khai trên Edge Device (Jetson Nano, Raspberry Pi).
+        *   Tích hợp gửi cảnh báo tự động (Telegram/Zalo) cho CSGT.
+        *   Mở rộng dataset ban đêm, thời tiết xấu.
+*   **Lời thoại:**
+    > "Về hướng phát triển, nhóm dự định nâng cấp lên Segmentation để tô màu chính xác vùng sự cố, triển khai trên thiết bị biên để giảm chi phí, và tích hợp gửi cảnh báo tự động cho lực lượng chức năng. Em xin cảm ơn thầy cô và các bạn đã lắng nghe!"
 
 ---
 
 ## ❓ CÂU HỎI THƯỜNG GẶP (Q&A POCKET GUIDE)
 
-### **Gói câu hỏi cho Trưởng nhóm IT (Architecture & Code):**
+### **Gói câu hỏi cho Team IT (Xuân Đạt & Thành viên IT) - Architecture & System:**
 1.  **Hỏi:** "Tại sao hệ thống này xử lý video chậm?"
     *   **Đáp:** "Dạ hiện tại đang chạy trên CPU nên FPS khoảng 10-15. Để chạy thực tế High-FPS, giải pháp là dùng GPU (CUDA) và convert model sang TensorRT ạ."
 2.  **Hỏi:** "Backend của em có chịu tải được 100 camera không?"
@@ -174,7 +201,7 @@
 3.  **Hỏi:** "Tại sao code này lại chia thành class `ModelTrainer` riêng?"
     *   **Đáp:** "Em áp dụng OOP và Clean Architecture để tách biệt Logic train và Logic ứng dụng. Giúp code dễ bảo trì và test hơn ạ."
 
-### **Gói câu hỏi cho Team Data Science (Model & Math):**
+### **Gói câu hỏi cho Team Data Science (DS 1, DS 2, DS 3) - Data & Model:**
 1.  **Hỏi:** "Tại sao không dùng YOLOv8 mới nhất?"
     *   **Đáp:** "Dạ YOLO chuyên về Object Detection (tìm vật thể), còn bài toán này thiên về Classification (phân loại hành vi). MobileNetV2 + Classification Head đơn giản và nhẹ hơn cho mục tiêu cảnh báo nhanh."
 2.  **Hỏi:** "Số lượng ảnh bao nhiêu? Có cân bằng (balanced) không?"
@@ -184,9 +211,21 @@
 
 ---
 
-## 💡 LỜI KHUYÊN CHO NHÓM TRƯỞNG
-1.  **Tự tin, Dẫn dắt:** Bạn là người "cầm trịch". Khi thành viên team DS bị thầy hỏi khó (bí), hãy khéo léo đỡ lời: *"Dạ phần kỹ thuật này để em bổ sung thêm cho bạn..."*
-2.  **Chuẩn bị Demo kỹ:** File video demo phải test trước 10 lần. Đảm bảo nó chạy mượt, không lỗi. Nên quay sẵn 1 video dự phòng (backup) lỡ lúc demo máy bị treo.
-3.  **Đồng bộ Slide:** Slide của 6 người phải cùng 1 Template (font chữ, màu sắc). Đừng để mỗi người 1 kiểu.
+## 💡 LỜI KHUYÊN CHO NHÓM
+
+### **Cho Xuân Đạt (Nhóm trưởng IT):**
+1.  **Tự tin, Dẫn dắt:** Bạn là nhóm trưởng. Khi thành viên bị hỏi khó, hãy khéo léo đỡ lời: *"Dạ phần này để em bổ sung thêm..."*
+2.  **Điều phối thời gian:** Đảm bảo mỗi người trình bày đúng 4-5 phút, tránh thừa/thiếu.
+3.  **Chuẩn bị backup plan:** Nếu demo lỗi, có video demo dự phòng sẵn sàng.
+
+### **Cho Thành viên IT (Backend Lead):**
+1.  **Nắm vững API:** Hiểu rõ từng endpoint, cách xử lý request/response.
+2.  **Chuẩn bị giải thích code:** Sẵn sàng show code khi được hỏi về implementation.
+3.  **Hiểu về tối ưu hóa:** Giải thích được các kỹ thuật async, caching, batch processing.
+
+### **Cho cả nhóm:**
+1.  **Đồng bộ Slide:** 5 người phải cùng 1 Template (font, màu sắc).
+2.  **Tập duyệt 2-3 lần:** Đảm bảo chuyển slide mượt mà, không bị gián đoạn.
+3.  **Phân công rõ ràng:** Ai trả lời câu hỏi gì, thống nhất trước.
 
 ***Chúc nhóm mình đạt điểm A!*** 🚀
