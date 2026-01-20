@@ -52,10 +52,6 @@ class ModelTrainerTF:
         if not self.data_path.exists():
             self.logger.error(f"Data directory not found: {self.data_path}")
             return False
-
-        # Image augmentation and preprocessing
-        # Note: EfficientNetB0 in Keras includes Rescaling in its architecture if use_preprocessing=True
-        # but here we'll do it manually to be safe or use the provided preprocessing function.
         
         train_ds = tf.keras.utils.image_dataset_from_directory(
             self.data_path,
