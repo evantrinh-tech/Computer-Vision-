@@ -1,0 +1,11 @@
+TEST SET EVALUATION
+============================================================
+
+              precision    recall  f1-score   support
+
+      Normal       0.90      0.70      0.78        86
+    Incident       0.78      0.93      0.85        97
+
+    accuracy                           0.82       183
+   macro avg       0.84      0.81      0.81       183
+weighted avg       0.83      0.82      0.82       183

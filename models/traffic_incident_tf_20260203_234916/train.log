@@ -1,0 +1,43 @@
+2026-02-03 23:49:16,361 [INFO] Results will be saved to: d:\Computer Vision\Computer-Vision Project\Computer-Vision-\models\traffic_incident_tf_20260203_234916
+2026-02-03 23:49:31,451 [INFO] Dataset loaded: Train=967, Val=143, Test=183
+2026-02-03 23:49:31,452 [INFO] 
+============================================================
+2026-02-03 23:49:31,452 [INFO] STARTING STAGE: Stage1_Transfer_Learning
+2026-02-03 23:49:31,453 [INFO] ============================================================
+2026-02-03 23:49:59,355 [WARNING] You are saving your model as an HDF5 file via `model.save()` or `keras.saving.save_model(model)`. This file format is considered legacy. We recommend using instead the native Keras format, e.g. `model.save('my_model.keras')` or `keras.saving.save_model(model, 'my_model.keras')`. 
+2026-02-03 23:50:21,948 [WARNING] You are saving your model as an HDF5 file via `model.save()` or `keras.saving.save_model(model)`. This file format is considered legacy. We recommend using instead the native Keras format, e.g. `model.save('my_model.keras')` or `keras.saving.save_model(model, 'my_model.keras')`. 
+2026-02-03 23:51:27,729 [WARNING] You are saving your model as an HDF5 file via `model.save()` or `keras.saving.save_model(model)`. This file format is considered legacy. We recommend using instead the native Keras format, e.g. `model.save('my_model.keras')` or `keras.saving.save_model(model, 'my_model.keras')`. 
+2026-02-03 23:51:49,494 [WARNING] You are saving your model as an HDF5 file via `model.save()` or `keras.saving.save_model(model)`. This file format is considered legacy. We recommend using instead the native Keras format, e.g. `model.save('my_model.keras')` or `keras.saving.save_model(model, 'my_model.keras')`. 
+2026-02-03 23:52:54,017 [WARNING] You are saving your model as an HDF5 file via `model.save()` or `keras.saving.save_model(model)`. This file format is considered legacy. We recommend using instead the native Keras format, e.g. `model.save('my_model.keras')` or `keras.saving.save_model(model, 'my_model.keras')`. 
+2026-02-03 23:53:57,921 [WARNING] You are saving your model as an HDF5 file via `model.save()` or `keras.saving.save_model(model)`. This file format is considered legacy. We recommend using instead the native Keras format, e.g. `model.save('my_model.keras')` or `keras.saving.save_model(model, 'my_model.keras')`. 
+2026-02-03 23:54:55,884 [WARNING] You are saving your model as an HDF5 file via `model.save()` or `keras.saving.save_model(model)`. This file format is considered legacy. We recommend using instead the native Keras format, e.g. `model.save('my_model.keras')` or `keras.saving.save_model(model, 'my_model.keras')`. 
+2026-02-03 23:57:30,219 [WARNING] You are saving your model as an HDF5 file via `model.save()` or `keras.saving.save_model(model)`. This file format is considered legacy. We recommend using instead the native Keras format, e.g. `model.save('my_model.keras')` or `keras.saving.save_model(model, 'my_model.keras')`. 
+2026-02-03 23:57:50,289 [WARNING] You are saving your model as an HDF5 file via `model.save()` or `keras.saving.save_model(model)`. This file format is considered legacy. We recommend using instead the native Keras format, e.g. `model.save('my_model.keras')` or `keras.saving.save_model(model, 'my_model.keras')`. 
+2026-02-03 23:58:29,647 [WARNING] You are saving your model as an HDF5 file via `model.save()` or `keras.saving.save_model(model)`. This file format is considered legacy. We recommend using instead the native Keras format, e.g. `model.save('my_model.keras')` or `keras.saving.save_model(model, 'my_model.keras')`. 
+2026-02-03 23:59:48,981 [INFO] Metrics chart saved to d:\Computer Vision\Computer-Vision Project\Computer-Vision-\models\traffic_incident_tf_20260203_234916\stage1_transfer_learning_metrics.png
+2026-02-03 23:59:48,997 [INFO] 
+============================================================
+2026-02-03 23:59:48,997 [INFO] STARTING STAGE: Stage2_Fine_Tuning
+2026-02-03 23:59:48,998 [INFO] ============================================================
+2026-02-04 00:01:06,328 [WARNING] You are saving your model as an HDF5 file via `model.save()` or `keras.saving.save_model(model)`. This file format is considered legacy. We recommend using instead the native Keras format, e.g. `model.save('my_model.keras')` or `keras.saving.save_model(model, 'my_model.keras')`. 
+2026-02-04 00:02:05,725 [WARNING] You are saving your model as an HDF5 file via `model.save()` or `keras.saving.save_model(model)`. This file format is considered legacy. We recommend using instead the native Keras format, e.g. `model.save('my_model.keras')` or `keras.saving.save_model(model, 'my_model.keras')`. 
+2026-02-04 00:04:59,193 [WARNING] You are saving your model as an HDF5 file via `model.save()` or `keras.saving.save_model(model)`. This file format is considered legacy. We recommend using instead the native Keras format, e.g. `model.save('my_model.keras')` or `keras.saving.save_model(model, 'my_model.keras')`. 
+2026-02-04 00:05:57,525 [WARNING] You are saving your model as an HDF5 file via `model.save()` or `keras.saving.save_model(model)`. This file format is considered legacy. We recommend using instead the native Keras format, e.g. `model.save('my_model.keras')` or `keras.saving.save_model(model, 'my_model.keras')`. 
+2026-02-04 00:17:51,992 [INFO] Metrics chart saved to d:\Computer Vision\Computer-Vision Project\Computer-Vision-\models\traffic_incident_tf_20260203_234916\stage2_fine_tuning_metrics.png
+2026-02-04 00:17:52,011 [INFO] 
+============================================================
+2026-02-04 00:17:52,012 [INFO] EVALUATING ON TEST SET
+2026-02-04 00:17:52,012 [INFO] ============================================================
+2026-02-04 00:17:56,047 [INFO] 
+Classification Report:
+              precision    recall  f1-score   support
+
+      Normal       0.90      0.70      0.78        86
+    Incident       0.78      0.93      0.85        97
+
+    accuracy                           0.82       183
+   macro avg       0.84      0.81      0.81       183
+weighted avg       0.83      0.82      0.82       183
+
+2026-02-04 00:17:56,343 [INFO] Confusion matrix saved to d:\Computer Vision\Computer-Vision Project\Computer-Vision-\models\traffic_incident_tf_20260203_234916\confusion_matrix.png
+2026-02-04 00:17:56,346 [WARNING] You are saving your model as an HDF5 file via `model.save()` or `keras.saving.save_model(model)`. This file format is considered legacy. We recommend using instead the native Keras format, e.g. `model.save('my_model.keras')` or `keras.saving.save_model(model, 'my_model.keras')`. 

@@ -1,0 +1,6 @@
+# Requirements for Baseline Training (ResNet-50 & VGG-16)
+tensorflow>=2.13.0
+scikit-learn>=1.3.0
+numpy>=1.24.0
+matplotlib>=3.8.0
+seaborn>=0.13.0
